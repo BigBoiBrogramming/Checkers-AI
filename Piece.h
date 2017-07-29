@@ -1,6 +1,9 @@
 using namespace std;
 
+#include "Team.h"
+
 class Piece {
 public:
-	Piece();
+	Team team;
+	Piece(Team);
 };

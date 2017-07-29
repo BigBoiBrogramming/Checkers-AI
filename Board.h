@@ -1,7 +1,10 @@
 using namespace std;
 
+#include "Tile.h"
+#include "Team.h"
+
 class Board {
 public:
-	public Board();
-	// add comment
+	Tile*** tiles;
+	Board();
 };

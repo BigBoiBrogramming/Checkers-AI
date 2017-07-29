@@ -1,0 +1,4 @@
+enum Team {
+	red,
+	black
+};
