@@ -1,7 +1,18 @@
+#ifndef BOARD_H
+#define TEAM_H
+
 using namespace std;
+
+#include "Tile.h"
+#include "Team.h"
 
 class Board {
 public:
-	public Board();
-	// add comment
+	Tile*** tiles;
+	
+	Board();
+	~Board();
+	void print();
 };
+
+#endif
