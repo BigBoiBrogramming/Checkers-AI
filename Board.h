@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define TEAM_H
+
 using namespace std;
 
 #include "Tile.h"
@@ -6,5 +9,10 @@ using namespace std;
 class Board {
 public:
 	Tile*** tiles;
+	
 	Board();
+	~Board();
+	void print();
 };
+
+#endif

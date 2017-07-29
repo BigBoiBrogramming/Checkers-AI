@@ -1,9 +1,10 @@
 using namespace std;
 
 #include "Team.h"
+#include "Board.h"
 
 class Piece {
 public:
 	Team team;
-	Piece(Team);
+	Piece(Board*, Team);
 };

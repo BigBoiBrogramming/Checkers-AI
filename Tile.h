@@ -5,20 +5,14 @@ using namespace std;
 
 class Tile {
 public:
+	Piece* piece_;
+	
 	Tile();
-
-	bool isPieceOnTile();
-
-	void addPieceOnTile(Piece* newPiece);
-
-	Piece* removePieceFromTile();
-
 	~Tile();
-
+	bool isPieceOnTile();
+	void addPieceOnTile(Piece* newPiece);
+	Piece* removePieceFromTile();
 
 private:
 	bool pieceOnTile_;
-
-	Piece* piece_;
-
 };

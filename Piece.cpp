@@ -1,6 +1,6 @@
 #include "Piece.h"
 
-Piece::Piece(Team team)
+Piece::Piece(Board* board, Team team)
 {
 	// initialize here
 }

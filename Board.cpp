@@ -20,7 +20,7 @@ Board::Board()
 	for (int i = 0; i <  2; i++) {
 		int spacer = (i+1) % 2;
 		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->piece_ = new Piece(black);
+			tiles[i][j+spacer]->piece_ = new Piece(this, black);
 		}
 	}
 
@@ -28,7 +28,7 @@ Board::Board()
 	for (int i = 5; i <  7; i++) {
 		int spacer = (i) % 2;
 		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->piece_ = new Piece(red);
+			tiles[i][j+spacer]->piece_ = new Piece(this, red);
 		}
 	}
 }
