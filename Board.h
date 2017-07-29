@@ -1,5 +1,5 @@
 #ifndef BOARD_H
-#define TEAM_H
+#define BOARD_H
 
 using namespace std;
 

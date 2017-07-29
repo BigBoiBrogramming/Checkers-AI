@@ -1,3 +1,6 @@
+#ifndef PIECE_H
+#define PIECE_H
+
 using namespace std;
 
 #include "Team.h"
@@ -8,3 +11,5 @@ public:
 	Team team;
 	Piece(Board*, Team);
 };
+
+#endif

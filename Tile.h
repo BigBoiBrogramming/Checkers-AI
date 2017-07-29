@@ -1,3 +1,6 @@
+#ifndef TILE_H
+#define TILE_H
+
 using namespace std;
 
 #include <iostream>
@@ -16,3 +19,5 @@ public:
 private:
 	bool pieceOnTile_;
 };
+
+#endif
