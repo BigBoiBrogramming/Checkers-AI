@@ -1,5 +1,4 @@
 #include "Board.h"
-#include "Piece.h"
 
 Board::Board()
 {
@@ -31,4 +30,15 @@ Board::Board()
 			tiles[i][j+spacer]->piece_ = new Piece(this, red);
 		}
 	}
+}
+
+Board::~Board()
+{
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			delete tiles[i][j];
+		}
+		delete tiles[i];
+	}
+	delete[] tiles;
 }

@@ -4,7 +4,8 @@
 using namespace std;
 
 #include "Team.h"
-#include "Board.h"
+
+class Board;
 
 class Piece {
 public:

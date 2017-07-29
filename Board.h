@@ -5,6 +5,7 @@ using namespace std;
 
 #include "Tile.h"
 #include "Team.h"
+#include "Piece.h"
 
 class Board {
 public:

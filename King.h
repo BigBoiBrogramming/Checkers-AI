@@ -1,9 +1,11 @@
 #ifndef KING_H
 #define KING_H
 
-class King extends Piece {
+#include "Piece.h"
+
+class King : public Piece {
 public:
-	King();
+	King(Board*, Team);
 };
 
 #endif
