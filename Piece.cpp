@@ -33,7 +33,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 	
 	// if the team is red, you move up 2 and your bound in 7
 	// otherwise, you move down 2 and your bound is 0
-	if (teamOfPiece_ == Team::Red) 
+	if (teamOfPiece_ == Team::red) 
 	{
 		moveDirection = 2;
 		maxY = 7;

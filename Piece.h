@@ -27,7 +27,7 @@ public:
 	
 	set<tuple<int,int> > getAvailableMoves();
 	
-	set<stack<tuple<int,int> > > getAvailableAttacks();
+	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> coord);
 	
 	tuple<int,int> coordinates_;
 	
