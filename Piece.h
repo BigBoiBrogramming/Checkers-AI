@@ -22,7 +22,7 @@ public:
 	
 	Piece(Board*, Team);
 	~Piece();
-	void move(Tile*);
+	void move(tuple<int,int> endTileCoords);
 	set<stack<tuple<int,int> > > getAvailableMoves();
 	set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int> coord);
 	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> coord);

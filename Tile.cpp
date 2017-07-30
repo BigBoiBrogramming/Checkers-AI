@@ -10,7 +10,7 @@ Tile::Tile(tuple<int,int> coord) : coordinates(coord)
 // check if piece is on tile
 bool Tile::hasPieceOnTile()
 {
-	return pieceOnTile_;
+	return pieceOnTile;
 }
 
 Team Tile::getTeamOfPieceOnTile() {
@@ -54,6 +54,11 @@ Piece* Tile::removePieceFromTile()
 		cerr << "There is no piece on this tile";
 		return NULL;
 	}
+}
+
+void Tile::setPiece(Piece* piece)
+{
+	this->piece = piece;
 }
 
 Tile::~Tile()

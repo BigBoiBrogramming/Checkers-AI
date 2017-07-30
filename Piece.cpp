@@ -53,6 +53,8 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 
 set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int> currentCoord)
 {
+	set<stack<tuple<int,int> > > availableSingleMoves;
+	
 	// intialize the forward direction and coordinate bound
 	int moveDirection;
 	int maxY;
@@ -81,17 +83,19 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 		if (attempt1X <= 7 && !(board->tiles[attempt1X][attemptY]->hasPieceOnTile())) {
 			
 			stack<tuple<int,int> > move;
-			move.push((attempt1X, attemptY));
-			availableMoves.insert(move);
+			move.push(make_tuple(attempt1X, attemptY));
+			availableSingleMoves.insert(move);
 		}
 		// check if left side move is valid
 		if (attempt2X >= 0 && !(board->tiles[attempt2X][attemptY]->hasPieceOnTile())) {
 			
 			stack<tuple<int,int> > move;
-			move.push((attempt2X, attemptY));
-			availableMoves.insert(move);
+			move.push(make_tuple(attempt2X, attemptY));
+			availableSingleMoves.insert(move);
 		}
 	}
+	
+	return availableSingleMoves;
 }
 
 set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCoord)
@@ -132,14 +136,14 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCo
 		&& !(board->tiles[attempt1X][attemptY]->hasPieceOnTile()) 
 		&& (board->tiles[attempt1X - (moveDirection/2)][attemptY - (moveDirection/2)]->getTeamOfPieceOnTile() != team)) 
 		{
-			possiblePathStarters.insert( (attempt1X, attemptY) );
+			possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 		}
 		// check if left side attack move is valid
 		if ( attempt2X >= 0
 		&& !(board->tiles[attempt2X][attemptY]->hasPieceOnTile())  
 		&& (board->tiles[attempt2X - (moveDirection/2)][attemptY - (moveDirection/2)]->getTeamOfPieceOnTile() != team))
 		{
-			possiblePathStarters.insert( (attempt2X, attemptY) );
+			possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 		}
 	}
 	
@@ -159,16 +163,16 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCo
 		stack<tuple<int,int> > smallestChain;
 		smallestChain.push(firstStepCoord);
 		possibleAttackChains.insert(smallestChain);
-		
-		return possibleAttackChains;
 	}
+	
+	return possibleAttackChains;
 }
 
-void Piece::move(tupe<int,int> endTileCoords)
+void Piece::move(tuple<int,int> endTileCoords)
 {
-	if (!(board->tiles[get<0>endTileCoords][get<1>endTileCoords]->hasPieceOnTile())) {
-		board->tiles[get<0>coordinates][get<1>coordinates]->setPiece(NULL);
-		board->tiles[get<0>endTileCoords][get<1>endTileCoords]->setPiece(this);
+	if (!(board->tiles[get<0>(endTileCoords)][get<1>(endTileCoords)]->hasPieceOnTile())) {
+		board->tiles[get<0>(coordinates)][get<1>(coordinates)]->setPiece(NULL);
+		board->tiles[get<0>(endTileCoords)][get<1>(endTileCoords)]->setPiece(this);
 		coordinates = endTileCoords;
 	}
 	else {

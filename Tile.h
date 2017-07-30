@@ -1,8 +1,6 @@
 #ifndef TILE_H
 #define TILE_H
 
-using namespace std;
-
 #include "Piece.h"
 #include <cstdlib>
 #include <iostream>
@@ -16,15 +14,16 @@ public:
 	Piece* piece;
 	tuple<int,int> coordinates;
 	
-	Tile();
+	Tile(tuple<int,int> coord);
 	~Tile();
 	bool hasPieceOnTile();
 	Team getTeamOfPieceOnTile();
 	void addPieceOnTile(Piece* newPiece);
+	void setPiece(Piece* piece);
 	Piece* removePieceFromTile();
 
 private:
-	bool pieceOnTile_;
+	bool pieceOnTile;
 };
 
 #endif
