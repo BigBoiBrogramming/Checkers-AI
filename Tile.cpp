@@ -16,7 +16,7 @@ bool Tile::isPieceOnTile()
 Team Tile::getTeamOfPieceOnTile() {
 	
 	if (piece_ != NULL) {
-		return piece_->teamOfPiece_
+		return piece_->teamOfPiece_;
 	}
 	else
 	{
