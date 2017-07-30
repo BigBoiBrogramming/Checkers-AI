@@ -25,7 +25,7 @@ ostream& operator<<(ostream& os, const Piece& p)
 set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 
 
-	set<tuple<int,int> > possiblePathStarters;
+	set<tuple<int,int> > possiblePathStarters = set<tuple<int,int> >();
 	
 	// intialize the "forward" direction, and corrdinate bound thereof	
 	int moveDirection;
@@ -80,7 +80,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 	
 	
 	// declare our set of attack chains that will eventually be returned	
-	set<stack<tuple<int,int> > > possibleAttackChains;
+	set<stack<tuple<int,int> > > possibleAttackChains =  set<stack<tuple<int,int> > >();
 	
 	
 	
@@ -120,7 +120,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 set<stack<tuple<int,int> > > Piece::getAvailableMoves() 
 {
 	
-	set<tuple<int,int> > possibleCoordsToMoveTo;
+	set<stack<tuple<int,int> > > possibleCoordsToMoveTo = set<stack<tuple<int,int> > >();
 	
 	int moveDirection;
 	int maxY;
@@ -161,9 +161,8 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 		if ( test2X >= 0  &&  !(boardPtr_->tiles[test2X][testY]->isPieceOnTile())  ) {
 			
 			stack<tuple<int,int> > move = stack<tuple<int,int> >();
-			move.push(test2X, testY);
-			
 			move.push((test2X, testY));
+
 			
 			possibleCoordsToMoveTo.insert(move);
 		}
