@@ -30,6 +30,8 @@ public:
 	
 	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> coord);
 	
+	friend ostream& operator<<(ostream&, const Piece&);
+	
 	tuple<int,int> coordinates_;
 	
 	Team teamOfPiece_;

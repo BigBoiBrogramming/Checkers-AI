@@ -7,6 +7,9 @@ using namespace std;
 #include "Team.h"
 #include "Piece.h"
 
+
+class Tile;
+
 class Board {
 public:
 	Tile*** tiles;
