@@ -13,6 +13,17 @@ bool Tile::isPieceOnTile()
 	return pieceOnTile_;
 }
 
+Team Tile::getTeamOfPieceOnTile() {
+	
+	if piece_ != NULL {
+		return piece_->teamOfPiece_
+	}
+	else
+	{
+		cerr << "There is no piece on this tile";
+	}
+	
+}
 
 // add piece to tile via a new pointer
 // throws error if there is already a piece on the tile

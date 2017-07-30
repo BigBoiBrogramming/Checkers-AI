@@ -13,6 +13,7 @@ public:
 	Tile();
 	~Tile();
 	bool isPieceOnTile();
+	Team getTeamOfPieceOnTile();
 	void addPieceOnTile(Piece* newPiece);
 	Piece* removePieceFromTile();
 

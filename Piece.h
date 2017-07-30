@@ -1,19 +1,34 @@
-#ifndef PIECE_H
-#define PIECE_H
 
-using namespace std;
 #include <iostream>
-#include "Team.h"
-#include <string>
 
+#include "Tile.h"
 class Board;
 
 class Piece {
 public:
 	Team team;
-	Board* board;
 	Piece(Board*, Team);
-	friend ostream& operator<<(ostream&, const Piece&);
+	
+	void move(Tile*);
+	
+	~Peace();
+	
+	set<tuple<int,int> > getAvailableMoves();
+	
+	set<vector<tuple<int,int> > > getAvailableAttacks();
+	
+	tuple<int,int> coordinates_;
+	
+	Team teamOfPiece_;
+
+private:
+	
+	Board* boardPtr_;
+	
+	Tile* tileLocationOfPiece_;
+	
+	
+
 };
 
 #endif
