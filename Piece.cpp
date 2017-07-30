@@ -179,3 +179,11 @@ void Piece::move(tuple<int,int> endTileCoords)
 		cerr << "there is already a tile here";
 	}
 }
+
+
+Piece::~Piece() {
+	
+	//TODO: DASTROI
+	
+	
+}
