@@ -21,7 +21,8 @@ ostream& operator<<(ostream& os, const Piece& p)
 	
 	return os;
 }
-set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
+
+set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 
 
 	set<tuple<int,int> > possiblePathStarters;

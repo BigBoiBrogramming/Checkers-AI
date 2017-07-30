@@ -1,21 +1,33 @@
+#ifndef PIECE_H
+#define PIECE_H
 
+
+using namespace std;
+
+#include <cstdlib>
 #include <iostream>
+#include <set>
+#include <tuple>
+#include <stack>
 
-#include "Tile.h"
+#include "Team.h"
+
 class Board;
+class Tile;
 
 class Piece {
 public:
 	Team team;
 	Piece(Board*, Team);
+	~Piece();
 	
 	void move(Tile*);
 	
-	~Peace();
+	
 	
 	set<tuple<int,int> > getAvailableMoves();
 	
-	set<vector<tuple<int,int> > > getAvailableAttacks();
+	set<stack<tuple<int,int> > > getAvailableAttacks();
 	
 	tuple<int,int> coordinates_;
 	
