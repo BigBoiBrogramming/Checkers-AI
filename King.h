@@ -6,6 +6,7 @@
 class King : public Piece {
 public:
 	King(Board*, Team);
+	friend ostream& operator<<(ostream&, const King&);
 };
 
 #endif

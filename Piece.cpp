@@ -2,5 +2,20 @@
 
 Piece::Piece(Board* board, Team team)
 {
-	// initialize here
+	this->board = board;
+	this->team = team;
+}
+
+ostream& operator<<(ostream& os, const Piece& p)
+{
+	string color;
+	if (p.team == Team::red) {
+		color = "R";
+	} else {
+		color = "B";
+	}
+	
+	os << "n" << color;
+	
+	return os;
 }

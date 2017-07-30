@@ -13,6 +13,8 @@ public:
 	
 	Board();
 	~Board();
+	void initializeTiles();
+	void initializePieces();
 	void print();
 };
 
