@@ -203,3 +203,11 @@ void Piece::move(Tile* endTile) {
 	}
 	
 }
+
+
+Piece::~Piece() {
+	
+	//TODO: DASTROI
+	
+	
+}
