@@ -8,6 +8,7 @@ Board::Board()
 
 Board::~Board()
 {
+	// deallocate all tiles
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			delete tiles[i][j];
@@ -17,6 +18,7 @@ Board::~Board()
 	delete[] tiles;
 }
 
+// create a 2D array of tiles
 void Board::initializeTiles()
 {
 	tiles = new Tile**[8];
@@ -32,6 +34,7 @@ void Board::initializeTiles()
 	}
 }
 
+// place pieces on the board
 void Board::initializePieces()
 {
 	// initialize black pieces
@@ -51,6 +54,7 @@ void Board::initializePieces()
 	}
 }
 
+// print out the current state of the board
 void Board::print()
 {
 	cout << "_________________________________________" << endl;

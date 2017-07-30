@@ -1,22 +1,22 @@
 #include "Tile.h"
 
-Tile::Tile()
+Tile::Tile(tuple<int,int> coord) : coordinates(coord)
 {
 	// initialize here
-	piece_ = NULL;
-	pieceOnTile_ = false;
+	piece = NULL;
+	pieceOnTile = false;
 }
 
 // check if piece is on tile
-bool Tile::isPieceOnTile()
+bool Tile::hasPieceOnTile()
 {
 	return pieceOnTile_;
 }
 
 Team Tile::getTeamOfPieceOnTile() {
 	
-	if (piece_ != NULL) {
-		return piece_->teamOfPiece_;
+	if (piece != NULL) {
+		return piece->team;
 	}
 	else
 	{
@@ -29,9 +29,9 @@ Team Tile::getTeamOfPieceOnTile() {
 // throws error if there is already a piece on the tile
 void Tile::addPieceOnTile(Piece* newPiece)
 {
-	if (!pieceOnTile_) {
-		pieceOnTile_ = true;
-		piece_ = newPiece;
+	if (!pieceOnTile) {
+		pieceOnTile = true;
+		piece = newPiece;
 	}
 	else
 	{
@@ -44,10 +44,10 @@ void Tile::addPieceOnTile(Piece* newPiece)
 // throws error if there is no piece on the tile
 Piece* Tile::removePieceFromTile()
 {
-	if (pieceOnTile_) {
-		pieceOnTile_ = false;
-		Piece* pieceHolder = piece_;
-		piece_ = NULL;
+	if (pieceOnTile) {
+		pieceOnTile = false;
+		Piece* pieceHolder = piece;
+		piece = NULL;
 		return pieceHolder;
 	}
 	else {
@@ -58,7 +58,7 @@ Piece* Tile::removePieceFromTile()
 
 Tile::~Tile()
 {
-	if (piece_ != NULL) {
-		delete piece_;
+	if (piece != NULL) {
+		delete piece;
 	}
 }

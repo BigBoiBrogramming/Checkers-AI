@@ -2,9 +2,9 @@
 
 King::King(Board* board, Team team) : Piece (board, team)
 {
-	// initialize here
 }
 
+// print the piece
 ostream& operator<<(ostream& os, const King& p)
 {
 	string color;
