@@ -120,7 +120,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 set<stack<tuple<int,int> > > Piece::getAvailableMoves() 
 {
 	
-	set<tuple<int,int> > possibleCoordsToMoveTo;
+	set<stack<tuple<int,int> > > possibleCoordsToMoveTo = set<stack<tuple<int,int> > >();
 	
 	int moveDirection;
 	int maxY;
