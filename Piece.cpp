@@ -103,7 +103,8 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 		}
 		
 		// add on smallest chain, our first step, to attack chains
-		stack<tuple<int,int> > smallestChain = { firstStepCoord };
+		stack<tuple<int,int> > smallestChain = stack<tuple<int, int> >();
+		smallestchain.push(firstStepCoord);
 		possibleAttackChains.insert(smallestChain);
 		
 		
@@ -149,14 +150,16 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 		
 		if ( test1X <= 7 &&  !(boardPtr_->tiles[test1X][testY]->isPieceOnTile())  ) {
 			
-			stack<tuple<int,int> > move = {(test1X, testY)};
+			stack<tuple<int,int> > move = stack<tuple<int,int> >();
+			move.push((test1X, testY));
 			
 			possibleCoordsToMoveTo.insert(move);
 		}
 		
 		if ( test2X >= 0  &&  !(boardPtr_->tiles[test2X][testY]->isPieceOnTile())  ) {
 			
-			stack<tuple<int,int> > move = {(test2X, testY)};
+			stack<tuple<int,int> > move = stack<tuple<int,int> >();
+			move.push(test2X, testY);
 			
 			possibleCoordsToMoveTo.insert(move);
 		}
