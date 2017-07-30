@@ -154,7 +154,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCo
 		set<stack<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
 		
 		// go through chains and add on the first step
-		for(auto chain: chainsAfterFirstStep) {
+		for(auto chain : chainsAfterFirstStep) {
 			chain.push(firstStepCoord);
 			possibleAttackChains.insert(chain);
 		}
@@ -178,12 +178,4 @@ void Piece::move(tuple<int,int> endTileCoords)
 	else {
 		cerr << "there is already a tile here";
 	}
-}
-
-
-Piece::~Piece() {
-	
-	//TODO: DASTROI
-	
-	
 }
