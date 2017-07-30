@@ -93,9 +93,9 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 		// go through chains and add on the first step
 		for(auto chain: chainsAfterFirstStep) {
 			
-			stack<tuple<int,int> chainCopy = chain.copy();
+			stack<tuple<int,int> > chainCopy = chain;
 			
-			chainCopy.push_front(firstStepCoord);
+			chainCopy.push(firstStepCoord);
 			
 			possibleAttackChains.insert(chainCopy);
 			
@@ -104,11 +104,11 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 		
 		// add on smallest chain, our first step, to attack chains
 		stack<tuple<int,int> > smallestChain = stack<tuple<int, int> >();
-		smallestchain.push(firstStepCoord);
+		smallestChain.push(firstStepCoord);
 		possibleAttackChains.insert(smallestChain);
 		
 		
-		return possibleAttackChains
+		return possibleAttackChains;
 		
 		
 	}
@@ -125,7 +125,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	int moveDirection;
 	int maxY;
 	
-	if (teamOfPiece_ == Team.Red) 
+	if (teamOfPiece_ == Team::red) 
 	{
 		moveDirection = 1;
 		maxY = 7;
@@ -153,7 +153,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 			stack<tuple<int,int> > move = stack<tuple<int,int> >();
 			move.push((test1X, testY));
 			
-			possibleCoordsToMoveTo.insert(move);
+			possibleCoordsToMoveTo.push(move);
 		}
 		
 		if ( test2X >= 0  &&  !(boardPtr_->tiles[test2X][testY]->isPieceOnTile())  ) {

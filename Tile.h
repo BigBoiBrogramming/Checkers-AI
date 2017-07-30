@@ -6,6 +6,8 @@ using namespace std;
 #include <iostream>
 #include "Piece.h"
 
+class Piece;
+
 class Tile {
 public:
 	Piece* piece_;

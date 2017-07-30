@@ -11,6 +11,7 @@ using namespace std;
 #include <stack>
 
 #include "Team.h"
+#include "Board.h"
 
 class Board;
 class Tile;
@@ -25,7 +26,7 @@ public:
 	
 	
 	
-	set<tuple<int,int> > getAvailableMoves();
+	set<stack<tuple<int,int> > > getAvailableMoves();
 	
 	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> coord);
 	
