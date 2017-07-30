@@ -151,15 +151,19 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 		if ( test1X <= 7 &&  !(boardPtr_->tiles[test1X][testY]->isPieceOnTile())  ) {
 			
 			stack<tuple<int,int> > move = stack<tuple<int,int> >();
+			
+			
 			move.push((test1X, testY));
 			
-			possibleCoordsToMoveTo.push(move);
+			possibleCoordsToMoveTo.insert(move);
 		}
 		
 		if ( test2X >= 0  &&  !(boardPtr_->tiles[test2X][testY]->isPieceOnTile())  ) {
 			
 			stack<tuple<int,int> > move = stack<tuple<int,int> >();
 			move.push(test2X, testY);
+			
+			move.push((test2X, testY));
 			
 			possibleCoordsToMoveTo.insert(move);
 		}
@@ -168,7 +172,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	
 	
 	
-	set<stack<tuple<int,int> > > possibleAttacks = getAvailableAttacks( );
+	set<stack<tuple<int,int> > > possibleAttacks = getAvailableAttacks(coordinates_);
 	
 	
 	
@@ -177,7 +181,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	
 }
 
-void Piece::move(int rowCoord, int columnCorrd) {
+void Piece::move(Tile* endTile) {
 	
 	// things to check...
 		// is the space available to be moved to
@@ -192,7 +196,7 @@ void Piece::move(int rowCoord, int columnCorrd) {
 				
 	
 	if ( !(endTile->isPieceOnTile()) ) {
-		tileLocationOfPiece_ = Tile
+		tileLocationOfPiece_ = endTile;
 		
 	}
 	else {
