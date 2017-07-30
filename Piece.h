@@ -1,17 +1,16 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-
 using namespace std;
-
-#include <cstdlib>
-#include <iostream>
-#include <set>
-#include <tuple>
-#include <stack>
 
 #include "Team.h"
 #include "Board.h"
+#include <cstdlib>
+#include <iostream>
+#include <string>
+#include <set>
+#include <tuple>
+#include <stack>
 
 class Board;
 class Tile;
@@ -19,31 +18,18 @@ class Tile;
 class Piece {
 public:
 	Team team;
+	tuple<int,int> coordinates;
+	
 	Piece(Board*, Team);
 	~Piece();
-	
 	void move(Tile*);
-	
-	
-	
 	set<stack<tuple<int,int> > > getAvailableMoves();
-	
+	set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int> coord);
 	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> coord);
-	
 	friend ostream& operator<<(ostream&, const Piece&);
-	
-	tuple<int,int> coordinates_;
-	
-	Team teamOfPiece_;
 
 private:
-	
-	Board* boardPtr_;
-	
-	Tile* tileLocationOfPiece_;
-	
-	
-
+	Board* board;
 };
 
 #endif

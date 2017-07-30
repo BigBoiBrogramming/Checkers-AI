@@ -3,18 +3,22 @@
 
 using namespace std;
 
-#include <iostream>
 #include "Piece.h"
+#include <cstdlib>
+#include <iostream>
+#include <string>
+#include <tuple>
 
 class Piece;
 
 class Tile {
 public:
-	Piece* piece_;
+	Piece* piece;
+	tuple<int,int> coordinates;
 	
 	Tile();
 	~Tile();
-	bool isPieceOnTile();
+	bool hasPieceOnTile();
 	Team getTeamOfPieceOnTile();
 	void addPieceOnTile(Piece* newPiece);
 	Piece* removePieceFromTile();
