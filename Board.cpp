@@ -18,7 +18,7 @@ Board::~Board()
 	delete[] tiles;
 }
 
-// create a 2D array of tiles
+// initialize a 2D array of tiles
 void Board::initializeTiles()
 {
 	tiles = new Tile**[8];
@@ -34,7 +34,7 @@ void Board::initializeTiles()
 	}
 }
 
-// place pieces on the board
+// place pieces on the board in their starting state
 void Board::initializePieces()
 {
 	// initialize red pieces
@@ -75,6 +75,7 @@ void Board::print()
 	}
 }
 
+// return the tiles
 Tile*** Board::getTiles()
 {
 	return tiles;

@@ -11,22 +11,23 @@ Piece::~Piece()
 {
 }
 
-void Piece::move(tuple<int,int> endTileCoords)
+// move the tile to the specified coordinate
+void Piece::move(tuple<int,int>& endTileCoord)
 {
-	if (!(board->getTiles()[get<0>(endTileCoords)][get<1>(endTileCoords)]->hasPieceOnTile())) {
+	if (!(board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->hasPieceOnTile())) {
 		board->getTiles()[get<0>(coordinates)][get<1>(coordinates)]->setPiece(NULL);
-		board->getTiles()[get<0>(endTileCoords)][get<1>(endTileCoords)]->setPiece(this);
-		coordinates = endTileCoords;
+		board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->setPiece(this);
+		coordinates = endTileCoord;
 	}
-	else {
-		cerr << "there is already a tile here";
-	}
+	
+	// TODO: Write an else statement that throws an exception (custom made).
 }
 
 // returns a set containing stacks of moves
 // a stack holds the coordinates (in sequence) that a piece traverses
 set<stack<tuple<int,int> > > Piece::getAvailableMoves() 
 {
+	// the set of moves that gets returned
 	set<stack<tuple<int,int> > > availableMoves;
 	
 	// get single square moves
@@ -48,8 +49,9 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	return availableMoves;
 }
 
-set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int> currentCoord)
+set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
 {
+	// the set of single moves that gets returned
 	set<stack<tuple<int,int> > > availableSingleMoves;
 	
 	// intialize the forward direction and coordinate bound
@@ -78,14 +80,14 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	if (attemptY <= maxY) {
 		// check if right side move is valid
 		if (attempt1X <= 7 && !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile())) {
-			
+			// add the right side move to the set of available moves
 			stack<tuple<int,int> > move;
 			move.push(make_tuple(attempt1X, attemptY));
 			availableSingleMoves.insert(move);
 		}
 		// check if left side move is valid
 		if (attempt2X >= 0 && !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())) {
-			
+			// add the left side move to the set of available moves
 			stack<tuple<int,int> > move;
 			move.push(make_tuple(attempt2X, attemptY));
 			availableSingleMoves.insert(move);
@@ -95,13 +97,13 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	return availableSingleMoves;
 }
 
-set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCoord)
+set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentCoord)
 {
+	// the set of attack chains that gets returned
+	set<stack<tuple<int,int> > > possibleAttackChains;
+		
 	// a set containing coordinates of the first moves in leap chains
 	set<tuple<int,int> > possiblePathStarters;
-	
-	// a set of attack chains that will eventually be returned
-	set<stack<tuple<int,int> > > possibleAttackChains;
 	
 	// intialize the forward direction and coordinate bound
 	int moveDirection;
@@ -133,6 +135,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCo
 		&& !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile()) 
 		&& (board->getTiles()[attempt1X - (moveDirection/2)][attemptY - (moveDirection/2)]->getPiece()->getTeam() != team)) 
 		{
+			// add the right side attack coordinate to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 		}
 		// check if left side attack move is valid
@@ -140,23 +143,23 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCo
 		&& !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())  
 		&& (board->getTiles()[attempt2X - (moveDirection/2)][attemptY - (moveDirection/2)]->getPiece()->getTeam() != team))
 		{
+			// add the left side attack coordinate to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 		}
 	}
 	
-	// go through each coordinate for a path starter
+	// iterate through the coordinates of path starters
 	for(auto firstStepCoord : possiblePathStarters) {
-		
-		// recursive call to create chains of steps after moving to firstStepCoord
+		// recursive call to generate all chains of steps after moving to the first step
 		set<stack<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
 		
-		// go through chains and add on the first step
+		// iterate through chains and add the first step onto the attack chains
 		for(auto chain : chainsAfterFirstStep) {
 			chain.push(firstStepCoord);
 			possibleAttackChains.insert(chain);
 		}
 		
-		// add on smallest chain, our first step, to attack chains
+		// create the smallest possible chain that consists of only the first step
 		stack<tuple<int,int> > smallestChain;
 		smallestChain.push(firstStepCoord);
 		possibleAttackChains.insert(smallestChain);
@@ -180,16 +183,19 @@ ostream& operator<<(ostream& os, const Piece& p)
 	return os;
 }
 
+// return the team
 Team Piece::getTeam()
 {
 	return team;
 }
 
-void Piece::setTeam(Team t)
+// set the team
+void Piece::setTeam(Team& t)
 {
 	team = t;
 }
 
+// return the coordinates
 tuple<int,int> Piece::getCoordinates()
 {
 	return coordinates;

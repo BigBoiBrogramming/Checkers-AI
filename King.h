@@ -5,7 +5,7 @@
 
 class King : public Piece {
 public:
-	King(Board* board, Team team);
+	King(Board* board, Team team, tuple<int,int> coordinates);
 	friend ostream& operator<<(ostream& os, const King& k);
 };
 

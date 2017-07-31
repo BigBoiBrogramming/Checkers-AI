@@ -1,6 +1,6 @@
 #include "King.h"
 
-King::King(Board* board, Team team) : Piece (board, team)
+King::King(Board* board, Team team, tuple<int,int> coordinates) : Piece (board, team, coordinates)
 {
 }
 

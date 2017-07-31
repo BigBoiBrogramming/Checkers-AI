@@ -1,26 +1,26 @@
 #include "Tile.h"
 
-Tile::Tile(tuple<int,int> coord) : coordinates(coord)
+Tile::Tile(tuple<int,int> coord) : coordinate(coord)
 {
 	piece = NULL;
 	pieceOnTile = false;
 }
 
-// check if piece is on tile
+Tile::~Tile()
+{
+	// deallocate the piece on the tile if it exists
+	if (piece != NULL) {
+		delete piece;
+	}
+}
+
+// return whether or not the tile has a piece on it
 bool Tile::hasPieceOnTile()
 {
 	return pieceOnTile;
 }
 
-// removes and returns pointer to the piece on the tile
-Piece* Tile::removePieceFromTile()
-{
-	pieceOnTile = false;
-	Piece* tempPiece = piece;
-	piece = NULL;
-	return tempPiece;
-}
-
+// sets the piece
 void Tile::setPiece(Piece* p)
 {	
 	piece = p;
@@ -32,18 +32,22 @@ void Tile::setPiece(Piece* p)
 	}
 }
 
-Tile::~Tile()
+// removes and returns pointer to the piece on the tile
+Piece* Tile::removePieceFromTile()
 {
-	if (piece != NULL) {
-		delete piece;
-	}
+	pieceOnTile = false;
+	Piece* tempPiece = piece;
+	piece = NULL;
+	return tempPiece;
 }
 
+// returns the coordinate
 tuple<int,int> Tile::getCoordinates()
 {
-	return coordinates;
+	return coordinate;
 }
 
+// returns the piece
 Piece* Tile::getPiece()
 {
 	return piece;

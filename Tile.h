@@ -25,7 +25,7 @@ public:
 private:
 	bool pieceOnTile;
 	Piece* piece;
-	tuple<int,int> coordinates;
+	tuple<int,int> coordinate;
 };
 
 #endif
