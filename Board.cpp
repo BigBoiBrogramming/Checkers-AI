@@ -41,7 +41,7 @@ void Board::initializePieces()
 	for (int i = 0; i <  3; i++) {
 		int spacer = (i+1) % 2;
 		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->piece = new Piece(this, black);
+			tiles[i][j+spacer]->setPiece(new Piece(this, black));
 		}
 	}
 
@@ -49,7 +49,7 @@ void Board::initializePieces()
 	for (int i = 5; i <  8; i++) {
 		int spacer = (i) % 2;
 		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->piece = new Piece(this, red);
+			tiles[i][j+spacer]->setPiece(new Piece(this, red));
 		}
 	}
 }
@@ -62,10 +62,10 @@ void Board::print()
 	for (int i = 0; i < 8; i++) {
 		cout << "|";
 		for (int j = 0; j < 8; j++) {
-			if (tiles[i][j]->piece == NULL) {
+			if (tiles[i][j]->getPiece() == NULL) {
 				cout << " -- |";
 			} else {
-				cout << " " << *tiles[i][j]->piece << " |";
+				cout << " " << *tiles[i][j]->getPiece() << " |";
 			}
 			if (j == 7) {
 				cout << endl;
@@ -73,4 +73,9 @@ void Board::print()
 		}
 		cout << "_________________________________________" << endl;
 	}
+}
+
+Tile*** Board::getTiles()
+{
+	return tiles;
 }
