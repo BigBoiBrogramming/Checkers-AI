@@ -17,13 +17,13 @@ using namespace std;
 
 class Piece {
 public:
-	Piece(Board*, Team);
+	Piece(Board* board, Team team);
 	~Piece();
 	void move(tuple<int,int> endTileCoords);
 	set<stack<tuple<int,int> > > getAvailableMoves();
-	set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int> coord);
-	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> coord);
-	friend ostream& operator<<(ostream&, const Piece&);
+	set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int> currentCoord);
+	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int> currentCoord);
+	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
 	void setTeam(Team t);
 	tuple<int,int> getCoordinates();

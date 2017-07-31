@@ -5,10 +5,10 @@ King::King(Board* board, Team team) : Piece (board, team)
 }
 
 // print the piece
-ostream& operator<<(ostream& os, const King& p)
+ostream& operator<<(ostream& os, const King& k)
 {
 	string color;
-	if (p.team == Team::red) {
+	if (k.team == Team::red) {
 		color = "R";
 	} else {
 		color = "B";

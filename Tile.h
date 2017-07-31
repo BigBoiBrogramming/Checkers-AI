@@ -17,8 +17,7 @@ public:
 	Tile(tuple<int,int> coord);
 	~Tile();
 	bool hasPieceOnTile();
-	void addPieceOnTile(Piece* newPiece);
-	void setPiece(Piece* piece);
+	void setPiece(Piece* p);
 	Piece* removePieceFromTile();
 	tuple<int,int> getCoordinates();
 	Piece* getPiece();
