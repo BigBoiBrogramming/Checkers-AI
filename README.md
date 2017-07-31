@@ -1,1 +1,2 @@
-Checkers-AI
+# Checkers AI
+This is a program that trains an artificail intelligence to play checkers. It works by learning the liklihood of victory from each possible board state. In one playthrough of a game, the AI keeps track of all the board states that it encounters. At the end of the game, the AI determines if the states that it encountered led to a win or a loss. It then adjusts its probabilistic model, which is stored in a cloud-based database (Firebase), accordingly. The more that the AI plays, the smarter it becomes.

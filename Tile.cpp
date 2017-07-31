@@ -1,69 +1,54 @@
 #include "Tile.h"
 
-Tile::Tile(tuple<int,int> coord) : coordinates(coord)
+Tile::Tile(tuple<int,int> coord) : coordinate(coord)
 {
-	// initialize here
 	piece = NULL;
 	pieceOnTile = false;
 }
 
-// check if piece is on tile
+Tile::~Tile()
+{
+	// deallocate the piece on the tile if it exists
+	if (piece != NULL) {
+		delete piece;
+	}
+}
+
+// return whether or not the tile has a piece on it
 bool Tile::hasPieceOnTile()
 {
 	return pieceOnTile;
 }
 
-Team Tile::getTeamOfPieceOnTile() {
+// sets the piece
+void Tile::setPiece(Piece* p)
+{	
+	piece = p;
 	
-	if (piece != NULL) {
-		return piece->team;
-	}
-	else
-	{
-		cerr << "There is no piece on this tile";
-	}
-	
-}
-
-// add piece to tile via a new pointer
-// throws error if there is already a piece on the tile
-void Tile::addPieceOnTile(Piece* newPiece)
-{
-	if (!pieceOnTile) {
+	if (this->piece == NULL) {
+		pieceOnTile = false;
+	} else {
 		pieceOnTile = true;
-		piece = newPiece;
 	}
-	else
-	{
-		cerr << "There is a piece on this tile";
-	}
-
 }
 
 // removes and returns pointer to the piece on the tile
-// throws error if there is no piece on the tile
 Piece* Tile::removePieceFromTile()
 {
-	if (pieceOnTile) {
-		pieceOnTile = false;
-		Piece* pieceHolder = piece;
-		piece = NULL;
-		return pieceHolder;
-	}
-	else {
-		cerr << "There is no piece on this tile";
-		return NULL;
-	}
+	pieceOnTile = false;
+	Piece* tempPiece = piece;
+	piece = NULL;
+	return tempPiece;
 }
 
-void Tile::setPiece(Piece* piece)
+// returns the coordinate
+tuple<int,int> Tile::getCoordinates()
 {
-	this->piece = piece;
+	return coordinate;
 }
 
-Tile::~Tile()
+// returns the piece
+Piece* Tile::getPiece()
 {
-	if (piece != NULL) {
-		delete piece;
-	}
+	return piece;
 }
