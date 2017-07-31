@@ -35,6 +35,7 @@ void Tile::setPiece(Piece* p)
 // removes and returns pointer to the piece on the tile
 Piece* Tile::removePieceFromTile()
 {
+	// TODO: Throw an exception (custom made) if the piece does not exist.
 	pieceOnTile = false;
 	Piece* tempPiece = piece;
 	piece = NULL;
@@ -50,5 +51,6 @@ tuple<int,int> Tile::getCoordinates()
 // returns the piece
 Piece* Tile::getPiece()
 {
+	// TODO: Throw an exception (custom made) if the piece does not exist.
 	return piece;
 }
