@@ -1,28 +1,26 @@
 #include "Piece.h"
 
-Piece::Piece(Board* board, Team team)
+Piece::Piece(Board* board, Team team, tuple<int,int> coordinates)
 {
 	this->board = board;
 	this->team = team;
+	this->coordinates = coordinates;
 }
 
 Piece::~Piece()
 {
 }
 
-// print the piece
-ostream& operator<<(ostream& os, const Piece& p)
+void Piece::move(tuple<int,int> endTileCoords)
 {
-	string color;
-	if (p.team == Team::red) {
-		color = "R";
-	} else {
-		color = "B";
+	if (!(board->getTiles()[get<0>(endTileCoords)][get<1>(endTileCoords)]->hasPieceOnTile())) {
+		board->getTiles()[get<0>(coordinates)][get<1>(coordinates)]->setPiece(NULL);
+		board->getTiles()[get<0>(endTileCoords)][get<1>(endTileCoords)]->setPiece(this);
+		coordinates = endTileCoords;
 	}
-	
-	os << "n" << color;
-	
-	return os;
+	else {
+		cerr << "there is already a tile here";
+	}
 }
 
 // returns a set containing stacks of moves
@@ -49,7 +47,6 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	
 	return availableMoves;
 }
-
 
 set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int> currentCoord)
 {
@@ -168,16 +165,19 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> currentCo
 	return possibleAttackChains;
 }
 
-void Piece::move(tuple<int,int> endTileCoords)
+// print the piece
+ostream& operator<<(ostream& os, const Piece& p)
 {
-	if (!(board->getTiles()[get<0>(endTileCoords)][get<1>(endTileCoords)]->hasPieceOnTile())) {
-		board->getTiles()[get<0>(coordinates)][get<1>(coordinates)]->setPiece(NULL);
-		board->getTiles()[get<0>(endTileCoords)][get<1>(endTileCoords)]->setPiece(this);
-		coordinates = endTileCoords;
+	string color;
+	if (p.team == Team::red) {
+		color = "R";
+	} else {
+		color = "B";
 	}
-	else {
-		cerr << "there is already a tile here";
-	}
+	
+	os << "n" << color;
+	
+	return os;
 }
 
 Team Piece::getTeam()

@@ -17,7 +17,7 @@ using namespace std;
 
 class Piece {
 public:
-	Piece(Board* board, Team team);
+	Piece(Board* board, Team team, tuple<int,int> coordinates);
 	~Piece();
 	void move(tuple<int,int> endTileCoords);
 	set<stack<tuple<int,int> > > getAvailableMoves();
