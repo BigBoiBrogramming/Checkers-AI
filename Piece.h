@@ -18,7 +18,7 @@ using namespace std;
 class Piece {
 public:
 	Piece(Board* board, Team team, tuple<int,int> coordinates);
-	~Piece();
+	virtual ~Piece();
 	void move(tuple<int,int>& endTileCoord);
 	set<stack<tuple<int,int> > > getAvailableMoves();
 	virtual set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
@@ -28,9 +28,9 @@ public:
 	void setTeam(Team& t);
 	tuple<int,int> getCoordinates();
 
-private:
-	Board* board;
+protected:
 	Team team;
+	Board* board;
 	tuple<int,int> coordinates;
 };
 

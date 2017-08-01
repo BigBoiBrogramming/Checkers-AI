@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall
+CXXFLAGS = -g -Wall -std=c++11
 PATH = objects
 DEPEND = piece.o king.o tile.o board.o
 OBJ = $(PATH)/piece.o $(PATH)/king.o $(PATH)/tile.o $(PATH)/board.o
