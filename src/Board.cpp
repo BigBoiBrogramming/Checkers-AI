@@ -62,7 +62,7 @@ void Board::print()
 	for (int i = 7; i >= 0; i--) {
 		cout << "|";
 		for (int j = 0; j < 8; j++) {
-			if (tiles[i][j]->getPiece() == NULL) {
+			if (!tiles[i][j]->hasPieceOnTile()) {
 				cout << " -- |";
 			} else {
 				cout << " " << *tiles[i][j]->getPiece() << " |";

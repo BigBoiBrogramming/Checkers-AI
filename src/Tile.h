@@ -7,6 +7,7 @@
 #include <string>
 #include <tuple>
 #include "Piece.h"
+#include "exceptions/PieceDoesNotExistException.h"
 
 using namespace std;
 
