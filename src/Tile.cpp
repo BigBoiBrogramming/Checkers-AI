@@ -36,7 +36,9 @@ void Tile::setPiece(Piece* p)
 Piece* Tile::removePieceFromTile()
 {
 	if (!pieceOnTile) {
-		throw new PieceDoesNotExistException(get<0>(coordinate), get<1>(coordinate));
+		PieceDoesNotExistException e = PieceDoesNotExistException(get<0>(coordinate), get<1>(coordinate));
+		cerr << e.what();
+		exit(1);
 	}
 	
 	pieceOnTile = false;
@@ -55,7 +57,9 @@ tuple<int,int> Tile::getCoordinates()
 Piece* Tile::getPiece()
 {
 	if (!pieceOnTile) {
-		throw new PieceDoesNotExistException(get<0>(coordinate), get<1>(coordinate));
+		PieceDoesNotExistException e = PieceDoesNotExistException(get<0>(coordinate), get<1>(coordinate));
+		cerr << e.what();
+		exit(1);
 	}
 	
 	return piece;

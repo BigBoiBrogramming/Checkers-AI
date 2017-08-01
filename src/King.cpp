@@ -1,6 +1,6 @@
 #include "King.h"
 
-King::King(Board* board, Team team, tuple<int,int> coordinates) : Piece (board, team, coordinates)
+King::King(Board* board, Team team, tuple<int,int> coordinate) : Piece (board, team, coordinate)
 {
 }
 
@@ -27,11 +27,11 @@ set<stack<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 		}
 		
 		// y coordinate of attempted diagonal moves
-		int attemptY = get<1>(coordinates) + moveDirection;
+		int attemptY = get<1>(coordinate) + moveDirection;
 		
 		// x coordinates of attempted diagonal moves
-		int attempt1X = get<0>(coordinates) + 1;
-		int attempt2X = get<0>(coordinates) - 1;
+		int attempt1X = get<0>(coordinate) + 1;
+		int attempt2X = get<0>(coordinate) - 1;
 		
 		// check if attack move is in bounds on the y-axis
 		if (attemptY <= maxY) {
@@ -63,7 +63,7 @@ set<stack<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 	
 	// iterate through both possible directions
 	for (int i = 0; i < 2; i++) {
-		// a set containing coordinates of the first moves in leap chains
+		// a set containing coordinate of the first moves in leap chains
 		set<tuple<int,int> > possiblePathStarters;
 		
 		// intialize the forward direction and coordinate bound

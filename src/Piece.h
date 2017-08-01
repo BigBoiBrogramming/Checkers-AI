@@ -9,6 +9,7 @@
 #include <stack>
 #include "Team.h"
 #include "Board.h"
+#include "exceptions/AlreadyHasPieceException.h"
 
 class Board;
 class Tile;
@@ -26,12 +27,12 @@ public:
 	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
 	void setTeam(Team& t);
-	tuple<int,int> getCoordinates();
+	tuple<int,int> getCoordinate();
 
 protected:
 	Team team;
 	Board* board;
-	tuple<int,int> coordinates;
+	tuple<int,int> coordinate;
 };
 
 #endif

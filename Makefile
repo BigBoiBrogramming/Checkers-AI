@@ -10,10 +10,10 @@ $(OBJDIR):
 	mkdir $(OBJDIR)
 
 checkers: Checkers.cpp $(OBJ_FILES)
-	g++ $(CXXFLAGS) Checkers.cpp $(OBJ_FILES) -o Checkers
+	$(CXX) $(CXXFLAGS) Checkers.cpp $(OBJ_FILES) -o Checkers
 
 obj/%.o: src/%.cpp
-	g++ $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 	
 deleteDSYM:
 	rm -rf Checkers.dSYM

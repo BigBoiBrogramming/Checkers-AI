@@ -1,10 +1,10 @@
 #include "Piece.h"
 
-Piece::Piece(Board* board, Team team, tuple<int,int> coordinates)
+Piece::Piece(Board* board, Team team, tuple<int,int> coordinate)
 {
 	this->board = board;
 	this->team = team;
-	this->coordinates = coordinates;
+	this->coordinate = coordinate;
 }
 
 Piece::~Piece()
@@ -14,13 +14,15 @@ Piece::~Piece()
 // move the tile to the specified coordinate
 void Piece::move(tuple<int,int>& endTileCoord)
 {
-	if (!(board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->hasPieceOnTile())) {
-		board->getTiles()[get<0>(coordinates)][get<1>(coordinates)]->setPiece(NULL);
-		board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->setPiece(this);
-		coordinates = endTileCoord;
+	if (board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->hasPieceOnTile()) {
+		AlreadyHasPieceException e = AlreadyHasPieceException(get<0>(coordinate), get<1>(coordinate));
+		cerr << e.what();
+		exit(1);
 	}
 	
-	// TODO: Write an else statement that throws an exception (custom made).
+	board->getTiles()[get<0>(coordinate)][get<1>(coordinate)]->setPiece(NULL);
+	board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->setPiece(this);
+	coordinate = endTileCoord;
 }
 
 // returns a set containing stacks of moves
@@ -31,7 +33,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	set<stack<tuple<int,int> > > availableMoves;
 	
 	// get single square moves
-	set<stack<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinates);
+	set<stack<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinate);
 	
 	// add single square moves to available moves
 	for (auto singleSquareMove : singleSquareMoves) {
@@ -39,7 +41,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	}
 	
 	// get attack moves
-	set<stack<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinates);
+	set<stack<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinate);
 	
 	// add single square moves to available moves
 	for (auto attackMove : attackMoves) {
@@ -71,11 +73,11 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	
 	// y coordinate of attempted diagonal moves
 	// piece is not a king so can only move in one direction
-	int attemptY = get<1>(coordinates) + moveDirection;
+	int attemptY = get<1>(coordinate) + moveDirection;
 	
 	// x coordinates of attempted diagonal moves
-	int attempt1X = get<0>(coordinates) + 1;
-	int attempt2X = get<0>(coordinates) - 1;
+	int attempt1X = get<0>(coordinate) + 1;
+	int attempt2X = get<0>(coordinate) - 1;
 	
 	// check if attack move is in bounds on the y-axis
 	if (attemptY <= maxY) {
@@ -198,7 +200,7 @@ void Piece::setTeam(Team& t)
 }
 
 // return the coordinates
-tuple<int,int> Piece::getCoordinates()
+tuple<int,int> Piece::getCoordinate()
 {
-	return coordinates;
+	return coordinate;
 }
