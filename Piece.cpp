@@ -49,6 +49,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	return availableMoves;
 }
 
+// returns the set of single square moves
 set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
 {
 	// the set of single moves that gets returned
@@ -97,6 +98,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	return availableSingleMoves;
 }
 
+// returns the set of attack moves
 set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentCoord)
 {
 	// the set of attack chains that gets returned
