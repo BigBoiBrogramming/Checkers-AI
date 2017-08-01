@@ -1,13 +1,174 @@
 #include "Piece.h"
 
-Piece::Piece(Board* board, Team team)
+Piece::Piece(Board* board, Team team, tuple<int,int> coordinates)
 {
-	// initialize here
-	boardPtr_ = board;
-	teamOfPiece_ = team;
-	tileLocationOfPiece_ = NULL;
+	this->board = board;
+	this->team = team;
+	this->coordinates = coordinates;
 }
 
+Piece::~Piece()
+{
+}
+
+// move the tile to the specified coordinate
+void Piece::move(tuple<int,int>& endTileCoord)
+{
+	if (!(board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->hasPieceOnTile())) {
+		board->getTiles()[get<0>(coordinates)][get<1>(coordinates)]->setPiece(NULL);
+		board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->setPiece(this);
+		coordinates = endTileCoord;
+	}
+	
+	// TODO: Write an else statement that throws an exception (custom made).
+}
+
+// returns a set containing stacks of moves
+// a stack holds the coordinates (in sequence) that a piece traverses
+set<stack<tuple<int,int> > > Piece::getAvailableMoves() 
+{
+	// the set of moves that gets returned
+	set<stack<tuple<int,int> > > availableMoves;
+	
+	// get single square moves
+	set<stack<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinates);
+	
+	// add single square moves to available moves
+	for (auto singleSquareMove : singleSquareMoves) {
+		availableMoves.insert(singleSquareMove);
+	}
+	
+	// get attack moves
+	set<stack<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinates);
+	
+	// add single square moves to available moves
+	for (auto attackMove : attackMoves) {
+		availableMoves.insert(attackMove);
+	}
+	
+	return availableMoves;
+}
+
+set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
+{
+	// the set of single moves that gets returned
+	set<stack<tuple<int,int> > > availableSingleMoves;
+	
+	// intialize the forward direction and coordinate bound
+	int moveDirection;
+	int maxY;
+	
+	// if the team is red, move up 1 and bound is 7
+	// otherwise, move down 1 and bound is 0
+	if (team == Team::red) {
+		moveDirection = 1;
+		maxY = 7;
+	} else {
+		moveDirection = -1;
+		maxY = 0;
+	}
+	
+	// y coordinate of attempted diagonal moves
+	// piece is not a king so can only move in one direction
+	int attemptY = get<1>(coordinates) + moveDirection;
+	
+	// x coordinates of attempted diagonal moves
+	int attempt1X = get<0>(coordinates) + 1;
+	int attempt2X = get<0>(coordinates) - 1;
+	
+	// check if attack move is in bounds on the y-axis
+	if (attemptY <= maxY) {
+		// check if right side move is valid
+		if (attempt1X <= 7 && !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile())) {
+			// add the right side move to the set of available moves
+			stack<tuple<int,int> > move;
+			move.push(make_tuple(attempt1X, attemptY));
+			availableSingleMoves.insert(move);
+		}
+		// check if left side move is valid
+		if (attempt2X >= 0 && !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())) {
+			// add the left side move to the set of available moves
+			stack<tuple<int,int> > move;
+			move.push(make_tuple(attempt2X, attemptY));
+			availableSingleMoves.insert(move);
+		}
+	}
+	
+	return availableSingleMoves;
+}
+
+set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentCoord)
+{
+	// the set of attack chains that gets returned
+	set<stack<tuple<int,int> > > possibleAttackChains;
+		
+	// a set containing coordinates of the first moves in leap chains
+	set<tuple<int,int> > possiblePathStarters;
+	
+	// intialize the forward direction and coordinate bound
+	int moveDirection;
+	int maxY;
+	
+	// if the team is red, move up 2 and bound is 7
+	// otherwise, move down 2 and bound is 0
+	if (team == Team::red) {
+		moveDirection = 2;
+		maxY = 7;
+		
+	} else {
+		moveDirection = -2;
+		maxY = 0;
+	}
+	
+	// y coordinate of attempted attacks (position after jumping)
+	// piece is not a king so can only move in one direction
+	int attemptY = get<1>(currentCoord) + moveDirection;
+	
+	// x coordinates of attempted attacks (position after jumping)
+	int attempt1X = get<0>(currentCoord) + 2;
+	int attempt2X = get<0>(currentCoord) - 2;
+	
+	// check if attack move is in bounds on the y-axis
+	if (attemptY <= maxY) {
+		// check if right side attack move is valid
+		if ( attempt1X <= 7 
+		&& !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile()) 
+		&& (board->getTiles()[attempt1X - (moveDirection/2)][attemptY - (moveDirection/2)]->getPiece()->getTeam() != team)) 
+		{
+			// add the right side attack coordinate to the set of possible path starters
+			possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
+		}
+		// check if left side attack move is valid
+		if ( attempt2X >= 0
+		&& !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())  
+		&& (board->getTiles()[attempt2X - (moveDirection/2)][attemptY - (moveDirection/2)]->getPiece()->getTeam() != team))
+		{
+			// add the left side attack coordinate to the set of possible path starters
+			possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
+		}
+	}
+	
+	// iterate through the coordinates of path starters
+	for(auto firstStepCoord : possiblePathStarters) {
+		// recursive call to generate all chains of steps after moving to the first step
+		set<stack<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
+		
+		// iterate through chains and add the first step onto the attack chains
+		for(auto chain : chainsAfterFirstStep) {
+			chain.push(firstStepCoord);
+			possibleAttackChains.insert(chain);
+		}
+		
+		// create the smallest possible chain that consists of only the first step
+		stack<tuple<int,int> > smallestChain;
+		smallestChain.push(firstStepCoord);
+		possibleAttackChains.insert(smallestChain);
+	}
+	
+	return possibleAttackChains;
+}
+
+// print the piece
 ostream& operator<<(ostream& os, const Piece& p)
 {
 	string color;
@@ -21,178 +182,21 @@ ostream& operator<<(ostream& os, const Piece& p)
 	
 	return os;
 }
-set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int> coord) {
 
-
-	set<tuple<int,int> > possiblePathStarters;
-	
-	// intialize the "forward" direction, and corrdinate bound thereof	
-	int moveDirection;
-	int maxY;
-	
-	// if the team is red, you move up 2 and your bound in 7
-	// otherwise, you move down 2 and your bound is 0
-	if (teamOfPiece_ == Team::Red) 
-	{
-		moveDirection = 2;
-		maxY = 7;
-		
-	}
-	else 
-	{
-		moveDirection = -2;
-		maxY = 0;
-	}
-	
-	
-	
-	// we have a normal piece, so we can only move in a single
-	// direction along y
-	int testY = get<1>(coord) + moveDirection;
-	
-	// there is always the possibility to move along x
-	// positively or negatively
-	int test1X = get<0>(coord) + 2;
-	int test2X = get<0>(coord) - 2;
-	
-	// if we have no reached the barrier of moving along y,
-	// we can check our x options
-	if (testY <= maxY) 
-	{
-		
-		if ( test1X <= 7 
-		&& !(boardPtr_->tiles[test1X][testY]->isPieceOnTile()) 
-		&& (boardPtr_->tiles[test1X - 1][testY - 1]->getTeamOfPieceOnTile() != teamOfPiece_)) 
-		{
-			possiblePathStarters.insert( (test1X, testY) );
-		}
-		
-		if ( test2X >= 0
-		&& !(boardPtr_->tiles[test2X][testY]->isPieceOnTile())  
-		&& (boardPtr_->tiles[test2X - 1][testY - 1]->getTeamOfPieceOnTile() != teamOfPiece_))
-		{
-			possiblePathStarters.insert( (test2X, testY) );
-		}
-		
-	}
-		
-	
-	
-	// declare our set of attack chains that will eventually be returned	
-	set<stack<tuple<int,int> > > possibleAttackChains;
-	
-	
-	
-	
-	for(auto firstStepCoord : possiblePathStarters) {
-		
-		// recursive call to create chains of steps after moving to firstStepCoord
-		set<stack<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
-		
-		// go through chains and add on the first step
-		for(auto chain: chainsAfterFirstStep) {
-			
-			stack<tuple<int,int> chainCopy = chain.copy();
-			
-			chainCopy.push_front(firstStepCoord);
-			
-			possibleAttackChains.insert(chainCopy);
-			
-			
-		}
-		
-		// add on smallest chain, our first step, to attack chains
-		stack<tuple<int,int> > smallestChain = { firstStepCoord };
-		possibleAttackChains.insert(smallestChain);
-		
-		
-		return possibleAttackChains
-		
-		
-	}
-			
-	
-}
-
-
-set<stack<tuple<int,int> > > Piece::getAvailableMoves() 
+// return the team
+Team Piece::getTeam()
 {
-	
-	set<tuple<int,int> > possibleCoordsToMoveTo;
-	
-	int moveDirection;
-	int maxY;
-	
-	if (teamOfPiece_ == Team.Red) 
-	{
-		moveDirection = 1;
-		maxY = 7;
-		
-	}
-	else 
-	{
-		moveDirection = -1;
-		maxY = 0;
-	}
-	
-	
-	
-	int test1X = get<0>(coordinates_) + 1;
-	int testY = get<1>(coordinates_) + moveDirection;
-	
-	
-	int test2X = get<0>(coordinates_) - 1;
-	
-	
-	if (testY <= maxY) {
-		
-		if ( test1X <= 7 &&  !(boardPtr_->tiles[test1X][testY]->isPieceOnTile())  ) {
-			
-			stack<tuple<int,int> > move = {(test1X, testY)};
-			
-			possibleCoordsToMoveTo.insert(move);
-		}
-		
-		if ( test2X >= 0  &&  !(boardPtr_->tiles[test2X][testY]->isPieceOnTile())  ) {
-			
-			stack<tuple<int,int> > move = {(test2X, testY)};
-			
-			possibleCoordsToMoveTo.insert(move);
-		}
-		
-	}
-	
-	
-	
-	set<stack<tuple<int,int> > > possibleAttacks = getAvailableAttacks( );
-	
-	
-	
-	
-	
-	
+	return team;
 }
 
-void Piece::move(int rowCoord, int columnCorrd) {
-	
-	// things to check...
-		// is the space available to be moved to
-			// conditions:
-				// must be within (0...7,0...7)
-				// must be empty
-				// if on red team, must be (+1, +1) or (-1, +1)
-				// if an enemy piece exists on (+1, +1) or (-1, +1), move to (+2, +2) or (-2, +2), respectively
-				
-				
-	
-				
-	
-	if ( !(endTile->isPieceOnTile()) ) {
-		tileLocationOfPiece_ = Tile
-		
-	}
-	else {
-		cerr << "there is already a tile here";
-	}
-	
+// set the team
+void Piece::setTeam(Team& t)
+{
+	team = t;
+}
+
+// return the coordinates
+tuple<int,int> Piece::getCoordinates()
+{
+	return coordinates;
 }

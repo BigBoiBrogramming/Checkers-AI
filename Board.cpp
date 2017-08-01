@@ -8,6 +8,7 @@ Board::Board()
 
 Board::~Board()
 {
+	// deallocate all tiles
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			delete tiles[i][j];
@@ -17,6 +18,7 @@ Board::~Board()
 	delete[] tiles;
 }
 
+// initialize a 2D array of tiles
 void Board::initializeTiles()
 {
 	tiles = new Tile**[8];
@@ -27,41 +29,43 @@ void Board::initializeTiles()
 	
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			tiles[i][j] = new Tile();
+			tiles[i][j] = new Tile(make_tuple(i, j));
 		}
 	}
 }
 
+// place pieces on the board in their starting state
 void Board::initializePieces()
 {
-	// initialize black pieces
+	// initialize red pieces
 	for (int i = 0; i <  3; i++) {
-		int spacer = (i+1) % 2;
+		int spacer = (i) % 2;
 		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->piece_ = new Piece(this, black);
+			tiles[i][j+spacer]->setPiece(new Piece(this, red, make_tuple(i, j)));
 		}
 	}
-
-	// initialize red pieces
+	
+	// initialize black pieces
 	for (int i = 5; i <  8; i++) {
 		int spacer = (i) % 2;
 		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->piece_ = new Piece(this, red);
+			tiles[i][j+spacer]->setPiece(new Piece(this, black, make_tuple(i, j)));
 		}
 	}
 }
 
+// print out the current state of the board
 void Board::print()
 {
 	cout << "_________________________________________" << endl;
 	
-	for (int i = 0; i < 8; i++) {
+	for (int i = 7; i >= 0; i--) {
 		cout << "|";
 		for (int j = 0; j < 8; j++) {
-			if (tiles[i][j]->piece_ == NULL) {
+			if (tiles[i][j]->getPiece() == NULL) {
 				cout << " -- |";
 			} else {
-				cout << " " << *tiles[i][j]->piece_ << " |";
+				cout << " " << *tiles[i][j]->getPiece() << " |";
 			}
 			if (j == 7) {
 				cout << endl;
@@ -69,4 +73,10 @@ void Board::print()
 		}
 		cout << "_________________________________________" << endl;
 	}
+}
+
+// return the tiles
+Tile*** Board::getTiles()
+{
+	return tiles;
 }

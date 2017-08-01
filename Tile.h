@@ -1,24 +1,31 @@
 #ifndef TILE_H
 #define TILE_H
 
+#include <cstdlib>
+#include <iostream>
+#include <stdexcept>
+#include <string>
+#include <tuple>
+#include "Piece.h"
+
 using namespace std;
 
-#include <iostream>
-#include "Piece.h"
+class Piece;
 
 class Tile {
 public:
-	Piece* piece_;
-	
-	Tile();
+	Tile(tuple<int,int> coord);
 	~Tile();
-	bool isPieceOnTile();
-	Team getTeamOfPieceOnTile();
-	void addPieceOnTile(Piece* newPiece);
+	bool hasPieceOnTile();
+	void setPiece(Piece* p);
 	Piece* removePieceFromTile();
+	tuple<int,int> getCoordinates();
+	Piece* getPiece();
 
 private:
-	bool pieceOnTile_;
+	bool pieceOnTile;
+	Piece* piece;
+	tuple<int,int> coordinate;
 };
 
 #endif

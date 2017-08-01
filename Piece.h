@@ -1,34 +1,37 @@
+#ifndef PIECE_H
+#define PIECE_H
 
+#include <cstdlib>
 #include <iostream>
+#include <string>
+#include <set>
+#include <tuple>
+#include <stack>
+#include "Team.h"
+#include "Board.h"
 
-#include "Tile.h"
 class Board;
+class Tile;
+
+using namespace std;
 
 class Piece {
 public:
-	Team team;
-	Piece(Board*, Team);
-	
-	void move(Tile*);
-	
-	~Peace();
-	
-	set<tuple<int,int> > getAvailableMoves();
-	
-	set<vector<tuple<int,int> > > getAvailableAttacks();
-	
-	tuple<int,int> coordinates_;
-	
-	Team teamOfPiece_;
+	Piece(Board* board, Team team, tuple<int,int> coordinates);
+	~Piece();
+	void move(tuple<int,int>& endTileCoord);
+	set<stack<tuple<int,int> > > getAvailableMoves();
+	set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
+	set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
+	friend ostream& operator<<(ostream& os, const Piece& p);
+	Team getTeam();
+	void setTeam(Team& t);
+	tuple<int,int> getCoordinates();
 
 private:
-	
-	Board* boardPtr_;
-	
-	Tile* tileLocationOfPiece_;
-	
-	
-
+	Board* board;
+	Team team;
+	tuple<int,int> coordinates;
 };
 
 #endif
