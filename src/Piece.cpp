@@ -14,14 +14,14 @@ Piece::~Piece()
 // move the tile to the specified coordinate
 void Piece::move(tuple<int,int>& endTileCoord)
 {
-	if (board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->hasPieceOnTile()) {
+	if (board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->hasPieceOnTile()) {
 		AlreadyHasPieceException e = AlreadyHasPieceException(get<0>(coordinate), get<1>(coordinate));
 		cerr << e.what();
 		exit(1);
 	}
 	
-	board->getTiles()[get<0>(coordinate)][get<1>(coordinate)]->setPiece(NULL);
-	board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->setPiece(this);
+	board->getTiles()[get<1>(coordinate)][get<0>(coordinate)]->setPiece(NULL);
+	board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->setPiece(this);
 	coordinate = endTileCoord;
 }
 
@@ -82,14 +82,14 @@ set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	// check if attack move is in bounds on the y-axis
 	if (attemptY <= maxY) {
 		// check if right side move is valid
-		if (attempt1X <= 7 && !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile())) {
+		if (attempt1X <= 7 && !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())) {
 			// add the right side move to the set of available moves
 			deque<tuple<int,int> > move;
 			move.push_front(make_tuple(attempt1X, attemptY));
 			availableSingleMoves.insert(move);
 		}
 		// check if left side move is valid
-		if (attempt2X >= 0 && !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())) {
+		if (attempt2X >= 0 && !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())) {
 			// add the left side move to the set of available moves
 			deque<tuple<int,int> > move;
 			move.push_front(make_tuple(attempt2X, attemptY));
@@ -135,18 +135,12 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	// check if attack move is in bounds on the y-axis
 	if (attemptY <= maxY) {
 		// check if right side attack move is valid
-		if ( attempt1X <= 7 
-		&& !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile()) 
-		&& (board->getTiles()[attempt1X - (moveDirection/2)][attemptY - (moveDirection/2)]->getPiece()->getTeam() != team)) 
-		{
+		if ( attempt1X <= 7 && !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())) {
 			// add the right side attack coordinate to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 		}
 		// check if left side attack move is valid
-		if ( attempt2X >= 0
-		&& !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())  
-		&& (board->getTiles()[attempt2X - (moveDirection/2)][attemptY - (moveDirection/2)]->getPiece()->getTeam() != team))
-		{
+		if ( attempt2X >= 0 && !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())) {
 			// add the left side attack coordinate to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 		}
