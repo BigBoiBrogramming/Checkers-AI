@@ -62,9 +62,9 @@ int main(int argc, char *argv[])
 			
 			cout << "Available moves for piece at location (" << x << ", " << y << ") are labeled as 'xx'." << endl;
 			
-			set<stack<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
-			for (auto stack : availableMoves) {
-				cout << get<0>(stack.top()) << " " << get<1>(stack.top()) << endl;
+			set<deque<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
+			for (auto deque : availableMoves) {
+				cout << get<0>(deque.front()) << " " << get<1>(deque.front()) << endl;
 			}
 		}
 	}

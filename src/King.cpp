@@ -5,10 +5,10 @@ King::King(Board* board, Team team, tuple<int,int> coordinate) : Piece (board, t
 }
 
 // returns the set of single square moves
-set<stack<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
+set<deque<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
 {
 	// the set of single moves that gets returned
-	set<stack<tuple<int,int> > > availableSingleMoves;
+	set<deque<tuple<int,int> > > availableSingleMoves;
 	
 	// iterate through both possible directions
 	for (int i = 0; i < 2; i++) {
@@ -38,14 +38,14 @@ set<stack<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 			// check if right side move is valid
 			if (attempt1X <= 7 && !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile())) {
 				// add the right side move to the set of available moves
-				stack<tuple<int,int> > move;
+				deque<tuple<int,int> > move;
 				move.push(make_tuple(attempt1X, attemptY));
 				availableSingleMoves.insert(move);
 			}
 			// check if left side move is valid
 			if (attempt2X >= 0 && !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())) {
 				// add the left side move to the set of available moves
-				stack<tuple<int,int> > move;
+				deque<tuple<int,int> > move;
 				move.push(make_tuple(attempt2X, attemptY));
 				availableSingleMoves.insert(move);
 			}
@@ -56,10 +56,10 @@ set<stack<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 }
 
 // returns the set of attack moves
-set<stack<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCoord)
+set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCoord)
 {
 	// the set of attack chains that gets returned
-	set<stack<tuple<int,int> > > possibleAttackChains;
+	set<deque<tuple<int,int> > > possibleAttackChains;
 	
 	// iterate through both possible directions
 	for (int i = 0; i < 2; i++) {
@@ -111,7 +111,7 @@ set<stack<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 		// iterate through the coordinates of path starters
 		for(auto firstStepCoord : possiblePathStarters) {
 			// recursive call to generate all chains of steps after moving to the first step
-			set<stack<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
+			set<deque<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
 			
 			// iterate through chains and add the first step onto the attack chains
 			for(auto chain : chainsAfterFirstStep) {
@@ -120,7 +120,7 @@ set<stack<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 			}
 			
 			// create the smallest possible chain that consists of only the first step
-			stack<tuple<int,int> > smallestChain;
+			deque<tuple<int,int> > smallestChain;
 			smallestChain.push(firstStepCoord);
 			possibleAttackChains.insert(smallestChain);
 		}

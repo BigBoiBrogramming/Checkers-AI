@@ -25,15 +25,15 @@ void Piece::move(tuple<int,int>& endTileCoord)
 	coordinate = endTileCoord;
 }
 
-// returns a set containing stacks of moves
-// a stack holds the coordinates (in sequence) that a piece traverses
-set<stack<tuple<int,int> > > Piece::getAvailableMoves() 
+// returns a set containing deque of moves
+// a deque holds the coordinates (in sequence) that a piece traverses
+set<deque<tuple<int,int> > > Piece::getAvailableMoves() 
 {
 	// the set of moves that gets returned
-	set<stack<tuple<int,int> > > availableMoves;
+	set<deque<tuple<int,int> > > availableMoves;
 	
 	// get single square moves
-	set<stack<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinate);
+	set<deque<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinate);
 	
 	// add single square moves to available moves
 	for (auto singleSquareMove : singleSquareMoves) {
@@ -41,7 +41,7 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 	}
 	
 	// get attack moves
-	set<stack<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinate);
+	set<deque<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinate);
 	
 	// add single square moves to available moves
 	for (auto attackMove : attackMoves) {
@@ -52,10 +52,10 @@ set<stack<tuple<int,int> > > Piece::getAvailableMoves()
 }
 
 // returns the set of single square moves
-set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
+set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
 {
 	// the set of single moves that gets returned
-	set<stack<tuple<int,int> > > availableSingleMoves;
+	set<deque<tuple<int,int> > > availableSingleMoves;
 	
 	// intialize the forward direction and coordinate bound
 	int moveDirection;
@@ -84,15 +84,15 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 		// check if right side move is valid
 		if (attempt1X <= 7 && !(board->getTiles()[attempt1X][attemptY]->hasPieceOnTile())) {
 			// add the right side move to the set of available moves
-			stack<tuple<int,int> > move;
-			move.push(make_tuple(attempt1X, attemptY));
+			deque<tuple<int,int> > move;
+			move.push_front(make_tuple(attempt1X, attemptY));
 			availableSingleMoves.insert(move);
 		}
 		// check if left side move is valid
 		if (attempt2X >= 0 && !(board->getTiles()[attempt2X][attemptY]->hasPieceOnTile())) {
 			// add the left side move to the set of available moves
-			stack<tuple<int,int> > move;
-			move.push(make_tuple(attempt2X, attemptY));
+			deque<tuple<int,int> > move;
+			move.push_front(make_tuple(attempt2X, attemptY));
 			availableSingleMoves.insert(move);
 		}
 	}
@@ -101,10 +101,10 @@ set<stack<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 }
 
 // returns the set of attack moves
-set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentCoord)
+set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentCoord)
 {
 	// the set of attack chains that gets returned
-	set<stack<tuple<int,int> > > possibleAttackChains;
+	set<deque<tuple<int,int> > > possibleAttackChains;
 		
 	// a set containing coordinates of the first moves in leap chains
 	set<tuple<int,int> > possiblePathStarters;
@@ -155,17 +155,17 @@ set<stack<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	// iterate through the coordinates of path starters
 	for(auto firstStepCoord : possiblePathStarters) {
 		// recursive call to generate all chains of steps after moving to the first step
-		set<stack<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
+		set<deque<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
 		
 		// iterate through chains and add the first step onto the attack chains
 		for(auto chain : chainsAfterFirstStep) {
-			chain.push(firstStepCoord);
+			chain.push_front(firstStepCoord);
 			possibleAttackChains.insert(chain);
 		}
 		
 		// create the smallest possible chain that consists of only the first step
-		stack<tuple<int,int> > smallestChain;
-		smallestChain.push(firstStepCoord);
+		deque<tuple<int,int> > smallestChain;
+		smallestChain.push_front(firstStepCoord);
 		possibleAttackChains.insert(smallestChain);
 	}
 	
