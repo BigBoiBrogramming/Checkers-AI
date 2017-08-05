@@ -1,11 +1,7 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include <cstdlib>
 #include <iostream>
-#include <stdexcept>
-#include <string>
-#include <tuple>
 #include "Piece.h"
 #include "exceptions/PieceDoesNotExistException.h"
 

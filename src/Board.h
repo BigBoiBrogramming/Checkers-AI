@@ -2,8 +2,6 @@
 #define BOARD_H
 
 #include "Tile.h"
-#include "Team.h"
-#include "Piece.h"
 
 using namespace std;
 

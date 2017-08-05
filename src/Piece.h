@@ -1,18 +1,13 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include <cstdlib>
-#include <iostream>
-#include <string>
 #include <set>
-#include <tuple>
 #include <stack>
 #include "Team.h"
 #include "Board.h"
 #include "exceptions/AlreadyHasPieceException.h"
 
 class Board;
-class Tile;
 
 using namespace std;
 
