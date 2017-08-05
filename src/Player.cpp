@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(int number, string n) : playerNumber(number), name(n)
+Player::Player(int number, string n, Team t) : playerNumber(number), name(n), team(t), piecesRemaining(12)
 {
 }
 
@@ -26,4 +26,19 @@ string Player::getName()
 void Player::setName(string& name)
 {
 	this->name = name;
+}
+
+Team Player::getTeam()
+{
+	return team;
+}
+
+int Player::getPiecesRemaining()
+{
+	return piecesRemaining;
+}
+
+void Player::decrementPiecesRemaining()
+{
+	piecesRemaining--;
 }

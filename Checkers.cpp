@@ -11,33 +11,65 @@ int main(int argc, char *argv[])
 {
 	Board board = Board();
 	
-	bool player1IsAI = inputPlayerType(1);
-	if (player1IsAI) {
+	// set up Player 1
+	bool redPlayerIsAI = inputPlayerType(1);
+	if (redPlayerIsAI) {
 		cout << "AI for this program is not yet supported. Exiting program." << endl;
 		exit(1);
 	}
-	Player* player1;
-	if (!player1IsAI) {
+	Player* redPlayer;
+	if (!redPlayerIsAI) {
 		string name = inputName();
-		player1 = new Player(1, name);
+		redPlayer = new Player(1, name, red);
 	} else {
-		// initialize player1 as AI 
+		// initialize Player 1 as AI 
 	}
 	
-	bool player2IsAI = inputPlayerType(2);
-	if (player2IsAI) {
+	// set up Player 2
+	bool blackPlayerIsAI = inputPlayerType(2);
+	if (blackPlayerIsAI) {
 		cout << "AI for this program is not yet supported. Exiting program." << endl;
 		exit(1);
 	}
-	Player* player2;
-	if (!player2IsAI) {
+	Player* blackPlayer;
+	if (!blackPlayerIsAI) {
 		string name = inputName();
-		player2 = new Player(2, name);
+		blackPlayer = new Player(2, name, black);
 	} else {
-		// initialize player1 as AI 
+		// initialize Player 2 as AI 
 	}
 	
+	cout << endl;
 	
-	cout << "Player " << player1->getPlayerNumber() << "'s name is " << player1->getName() << "." << endl;
-	cout << "Player " << player2->getPlayerNumber() << "'s name is " << player2->getName() << "." << endl;
+	// create an array of the two players
+	Player* players[] = {redPlayer, blackPlayer};
+	string teams[] = {"Red", "Black"};
+	
+	// play the game until one player runs out of pieces
+	while (redPlayer->getPiecesRemaining() > 0 && blackPlayer->getPiecesRemaining() > 0) {
+		for (auto player : players) {
+			// print the board
+			board.print();
+			
+			// prompt the user to enter coordinates
+			cout << endl << teams[player->getTeam()] << " Player's turn. ";
+			cout << "Select coordinates of a friendly piece (x y) to see available moves: ";
+			int x, y;
+			
+			inputCoordinates(x, y, board, player->getTeam());
+			cout << "X is " << x << endl;
+			cout << "Y is " << y << endl;
+			
+			cout << "Available moves for piece at location (" << x << ", " << y << ") are labeled as 'xx'." << endl;
+			
+			set<stack<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
+			for (auto stack : availableMoves) {
+				cout << get<0>(stack.top()) << " " << get<1>(stack.top()) << endl;
+			}
+		}
+	}
+	
+	// deallocate players
+	delete redPlayer;
+	delete blackPlayer;
 }

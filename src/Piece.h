@@ -17,14 +17,14 @@ public:
 	virtual ~Piece();
 	void move(tuple<int,int>& endTileCoord);
 	set<stack<tuple<int,int> > > getAvailableMoves();
-	virtual set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
-	virtual set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
 	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
 	void setTeam(Team& t);
 	tuple<int,int> getCoordinate();
 
 protected:
+	virtual set<stack<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
+	virtual set<stack<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
 	Team team;
 	Board* board;
 	tuple<int,int> coordinate;
