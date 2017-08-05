@@ -57,10 +57,11 @@ void Board::initializePieces()
 // print out the current state of the board
 void Board::print()
 {
-	cout << "_________________________________________" << endl;
+	cout << "    0    1    2    3    4    5    6    7" << endl;
+	cout << "  _________________________________________" << endl;
 	
 	for (int i = 7; i >= 0; i--) {
-		cout << "|";
+		cout << i << " |";
 		for (int j = 0; j < 8; j++) {
 			if (!tiles[i][j]->hasPieceOnTile()) {
 				cout << " -- |";
@@ -71,7 +72,7 @@ void Board::print()
 				cout << endl;
 			}
 		}
-		cout << "_________________________________________" << endl;
+		cout << "  _________________________________________" << endl;
 	}
 }
 
