@@ -60,12 +60,7 @@ int main(int argc, char *argv[])
 			cout << "X is " << x << endl;
 			cout << "Y is " << y << endl;
 			
-			cout << "Available moves for piece at location (" << x << ", " << y << ") are labeled as 'xx'." << endl;
-			
 			set<deque<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
-//			for (auto deque : availableMoves) {
-//				cout << get<0>(deque.back()) << " " << get<1>(deque.back()) << endl;
-//			}
 		}
 	}
 	
