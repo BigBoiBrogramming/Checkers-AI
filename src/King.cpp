@@ -133,7 +133,7 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 ostream& operator<<(ostream& os, const King& k)
 {
 	string color;
-	if (k.team == Team::red) {
+	if (k.team == red) {
 		color = "R";
 	} else {
 		color = "B";

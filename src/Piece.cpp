@@ -12,7 +12,7 @@ Piece::~Piece()
 }
 
 // move the tile to the specified coordinate
-void Piece::move(tuple<int,int>& endTileCoord)
+void Piece::move(tuple<int,int> endTileCoord)
 {
 	if (board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->hasPieceOnTile()) {
 		AlreadyHasPieceException e = AlreadyHasPieceException(get<0>(coordinate), get<1>(coordinate));
@@ -63,7 +63,7 @@ set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	
 	// if the team is red, move up 1 and bound is 7
 	// otherwise, move down 1 and bound is 0
-	if (team == Team::red) {
+	if (team == red) {
 		moveDirection = 1;
 		maxY = 7;
 	} else {
@@ -115,7 +115,7 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	
 	// if the team is red, move up 2 and bound is 7
 	// otherwise, move down 2 and bound is 0
-	if (team == Team::red) {
+	if (team == red) {
 		moveDirection = 2;
 		maxY = 7;
 		
@@ -170,7 +170,7 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 ostream& operator<<(ostream& os, const Piece& p)
 {
 	string color;
-	if (p.team == Team::red) {
+	if (p.team == red) {
 		color = "R";
 	} else {
 		color = "B";

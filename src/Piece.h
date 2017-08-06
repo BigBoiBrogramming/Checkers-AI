@@ -15,7 +15,7 @@ class Piece {
 public:
 	Piece(Board* board, Team team, tuple<int,int> coordinates);
 	virtual ~Piece();
-	void move(tuple<int,int>& endTileCoord);
+	void move(tuple<int,int> endTileCoord);
 	set<deque<tuple<int,int> > > getAvailableMoves();
 	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
