@@ -20,10 +20,8 @@ set<deque<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 		// for the other, move down 1 and bound is 0
 		if (i == 0) {
 			moveDirection = 1;
-			maxY = 7;
 		} else {
 			moveDirection = -1;
-			maxY = 0;
 		}
 		
 		// y coordinate of attempted diagonal moves
@@ -34,19 +32,19 @@ set<deque<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 		int attempt2X = get<0>(coordinate) - 1;
 		
 		// check if attack move is in bounds on the y-axis
-		if (attemptY <= maxY) {
+		if ((attemptY >= 0) && (attemptY <= 7)) {
 			// check if right side move is valid
 			if (attempt1X <= 7 && !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())) {
 				// add the right side move to the set of available moves
 				deque<tuple<int,int> > move;
-				move.push(make_tuple(attempt1X, attemptY));
+				move.push_front(make_tuple(attempt1X, attemptY));
 				availableSingleMoves.insert(move);
 			}
 			// check if left side move is valid
 			if (attempt2X >= 0 && !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())) {
 				// add the left side move to the set of available moves
 				deque<tuple<int,int> > move;
-				move.push(make_tuple(attempt2X, attemptY));
+				move.push_front(make_tuple(attempt2X, attemptY));
 				availableSingleMoves.insert(move);
 			}
 		}
@@ -89,20 +87,20 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 		int attempt2X = get<0>(currentCoord) - 2;
 		
 		// check if attack move is in bounds on the y-axis
-		if (attemptY <= maxY) {
+		if ((attemptY <= maxY) || (attemptY >= maxY)) {
 			// check if right side attack move is valid
-			if ( attempt1X <= 7 
-			&& !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile()) 
-			&& (board->getTiles()[attemptY - (moveDirection/2)][attempt1X - (moveDirection/2)]->getPiece()->getTeam() != team)) 
-			{
+			if ((attempt1X <= 7)
+			&& !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())
+			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->hasPieceOnTile())
+			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->getPiece()->getTeam() != team)) {
 				// add the right side attack coordinate to the set of possible path starters
 				possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 			}
 			// check if left side attack move is valid
-			if ( attempt2X >= 0
-			&& !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())  
-			&& (board->getTiles()[attemptY - (moveDirection/2)][attempt2X - (moveDirection/2)]->getPiece()->getTeam() != team))
-			{
+			if ((attempt2X >= 0)
+			&& !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())
+			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->hasPieceOnTile())
+			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->getPiece()->getTeam() != team)) {
 				// add the left side attack coordinate to the set of possible path starters
 				possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 			}
@@ -113,15 +111,17 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 			// recursive call to generate all chains of steps after moving to the first step
 			set<deque<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
 			
+			cout << "Chains after first step size = " << chainsAfterFirstStep.size() << endl;
+			
 			// iterate through chains and add the first step onto the attack chains
 			for(auto chain : chainsAfterFirstStep) {
-				chain.push(firstStepCoord);
+				chain.push_front(firstStepCoord);
 				possibleAttackChains.insert(chain);
 			}
 			
 			// create the smallest possible chain that consists of only the first step
 			deque<tuple<int,int> > smallestChain;
-			smallestChain.push(firstStepCoord);
+			smallestChain.push_front(firstStepCoord);
 			possibleAttackChains.insert(smallestChain);
 		}
 	}

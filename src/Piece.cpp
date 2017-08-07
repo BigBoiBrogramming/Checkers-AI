@@ -14,14 +14,14 @@ Piece::~Piece()
 // move the tile to the specified coordinate
 void Piece::move(tuple<int,int> endTileCoord)
 {
-	if (board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->hasPieceOnTile()) {
+	if (board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->hasPieceOnTile()) {
 		AlreadyHasPieceException e = AlreadyHasPieceException(get<0>(coordinate), get<1>(coordinate));
 		cerr << e.what();
 		exit(1);
 	}
 	
-	board->getTiles()[get<0>(coordinate)][get<1>(coordinate)]->setPiece(NULL);
-	board->getTiles()[get<0>(endTileCoord)][get<1>(endTileCoord)]->setPiece(this);
+	board->getTiles()[get<1>(coordinate)][get<0>(coordinate)]->setPiece(NULL);
+	board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->setPiece(this);
 	coordinate = endTileCoord;
 }
 
@@ -64,9 +64,6 @@ set<deque<tuple<int,int> > > Piece::getAvailableMoves()
 // returns the set of single square moves
 set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>& currentCoord)
 {
-	cout << "Upon entering singlemoves, coord is (" << get<0>(currentCoord) << ", " << get<1>(currentCoord) << ")." << endl;
-	
-	
 	// the set of single moves that gets returned
 	set<deque<tuple<int,int> > > availableSingleMoves;
 	
@@ -91,22 +88,18 @@ set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	int attempt1X = get<0>(coordinate) + 1;
 	int attempt2X = get<0>(coordinate) - 1;
 	
-	cout << "Team is " << team << endl;
-	cout << "Attempting 1 (right) as " << attempt1X << ", " << attemptY << endl;
-	cout << "Attempting 2 (left) as " << attempt2X << ", " << attemptY << endl;
-	
 	// check if attack move is in bounds on the y-axis
 	if ((team == red && attemptY <= maxY) || (team == black && attemptY >= maxY)) {
-		// check if down move is valid
+		// check if right side move is valid
 		if (attempt1X <= 7 && !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())) {
-			// add the down move to the set of available moves
+			// add the right side move to the set of available moves
 			deque<tuple<int,int> > move;
 			move.push_front(make_tuple(attempt1X, attemptY));
 			availableSingleMoves.insert(move);
 		}
-		// check if up move is valid
+		// check if left side move is valid
 		if (attempt2X >= 0 && !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())) {
-			// add the up move to the set of available moves
+			// add the left side move to the set of available moves
 			deque<tuple<int,int> > move;
 			move.push_front(make_tuple(attempt2X, attemptY));
 			availableSingleMoves.insert(move);
@@ -149,14 +142,20 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	int attempt2X = get<0>(currentCoord) - 2;
 	
 	// check if attack move is in bounds on the y-axis
-	if (attemptY <= maxY) {
+	if ((team == red && attemptY <= maxY) || (team == black && attemptY >= maxY)) {
 		// check if right side attack move is valid
-		if ( attempt1X <= 7 && !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())) {
+		if ((attempt1X <= 7)
+		&& !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())
+		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->hasPieceOnTile())
+		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->getPiece()->getTeam() != team)) {
 			// add the right side attack coordinate to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 		}
 		// check if left side attack move is valid
-		if ( attempt2X >= 0 && !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())) {
+		if ((attempt2X >= 0)
+		&& !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())
+		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->hasPieceOnTile())
+		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->getPiece()->getTeam() != team)) {
 			// add the left side attack coordinate to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 		}
@@ -166,6 +165,8 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	for(auto firstStepCoord : possiblePathStarters) {
 		// recursive call to generate all chains of steps after moving to the first step
 		set<deque<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
+		
+		cout << "Chains after first step size = " << chainsAfterFirstStep.size() << endl;
 		
 		// iterate through chains and add the first step onto the attack chains
 		for(auto chain : chainsAfterFirstStep) {

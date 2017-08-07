@@ -59,6 +59,11 @@ int main(int argc, char *argv[])
 			inputCoordinates(x, y, board, player->getTeam());
 			
 			set<deque<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
+			
+			cout << "Enter the coordinates that you would like to move to: ";
+			int moveX, moveY;
+			cin >> moveX >> moveY;
+			board.getTiles()[y][x]->getPiece()->move(make_tuple(moveX, moveY));
 		}
 	}
 	
