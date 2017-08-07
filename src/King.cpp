@@ -14,7 +14,6 @@ set<deque<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 	for (int i = 0; i < 2; i++) {
 		// intialize the forward direction and coordinate bound
 		int moveDirection;
-		int maxY;
 		
 		// for one direction, move up 1 and bound is 7
 		// for the other, move down 1 and bound is 0
@@ -110,8 +109,6 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 		for(auto firstStepCoord : possiblePathStarters) {
 			// recursive call to generate all chains of steps after moving to the first step
 			set<deque<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
-			
-			cout << "Chains after first step size = " << chainsAfterFirstStep.size() << endl;
 			
 			// iterate through chains and add the first step onto the attack chains
 			for(auto chain : chainsAfterFirstStep) {

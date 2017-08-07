@@ -1,3 +1,4 @@
+#include <map>
 #include "src/Game.h"
 #include "src/Player.h"
 #include "src/Board.h"
@@ -52,18 +53,19 @@ int main(int argc, char *argv[])
 			board.print();
 			
 			// prompt the user to enter coordinates
-			cout << endl << teams[player->getTeam()] << " Player's turn. ";
+			cout << "\n\n" << teams[player->getTeam()] << " Player's turn. ";
+			
 			cout << "Select coordinates of a friendly piece (x y) to see available moves: ";
-			int x, y;
+			set<deque<tuple<int,int> > > availableMoves = selectPieceAndGetMoves(board, player);
 			
-			inputCoordinates(x, y, board, player->getTeam());
+			// retrieve the map of available moves
+			map<int, deque<tuple<int,int> > > moveMap = displayMovesAndReturnMap(availableMoves);
 			
-			set<deque<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
+			// let the user pick a move
+			int moveNumber = getMoveNumber(moveMap.size());
+			deque<tuple<int,int> > finalMove = moveMap[moveNumber];
 			
-			cout << "Enter the coordinates that you would like to move to: ";
-			int moveX, moveY;
-			cin >> moveX >> moveY;
-			board.getTiles()[y][x]->getPiece()->move(make_tuple(moveX, moveY));
+			// TODO: move to the space and delete all in between pieces along the way
 		}
 	}
 	

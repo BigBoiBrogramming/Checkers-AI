@@ -35,11 +35,6 @@ set<deque<tuple<int,int> > > Piece::getAvailableMoves()
 	// get single square moves
 	set<deque<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinate);
 	
-	cout << "Single moves:" << endl;
-	for (auto deque : singleSquareMoves) {
-		cout << get<0>(deque.back()) << " " << get<1>(deque.back()) << endl;
-	}
-	
 	// add single square moves to available moves
 	for (auto singleSquareMove : singleSquareMoves) {
 		availableMoves.insert(singleSquareMove);
@@ -47,11 +42,6 @@ set<deque<tuple<int,int> > > Piece::getAvailableMoves()
 	
 	// get attack moves
 	set<deque<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinate);
-	
-	cout << "Attack moves:" << endl;
-	for (auto deque : attackMoves) {
-		cout << get<0>(deque.back()) << " " << get<1>(deque.back()) << endl;
-	}
 	
 	// add single square moves to available moves
 	for (auto attackMove : attackMoves) {
@@ -165,8 +155,6 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	for(auto firstStepCoord : possiblePathStarters) {
 		// recursive call to generate all chains of steps after moving to the first step
 		set<deque<tuple<int,int> > > chainsAfterFirstStep = getAvailableAttacks(firstStepCoord);
-		
-		cout << "Chains after first step size = " << chainsAfterFirstStep.size() << endl;
 		
 		// iterate through chains and add the first step onto the attack chains
 		for(auto chain : chainsAfterFirstStep) {
