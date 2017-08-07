@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 			
 			inputCoordinates(x, y, board, player->getTeam());
 			
-			set<deque<tuple<int,int> > > availableMoves = board.getTiles()[x][y]->getPiece()->getAvailableMoves();
+			set<deque<tuple<int,int> > > availableMoves = board.getTiles()[y][x]->getPiece()->getAvailableMoves();
 		}
 	}
 	

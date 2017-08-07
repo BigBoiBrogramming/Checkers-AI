@@ -41,7 +41,7 @@ void Board::initializePieces()
 	for (int i = 0; i <  8; i++) {
 		int startIndex = i % 2;
 		for (int j = startIndex; j < 3; j+=2) {
-			tiles[i][j]->setPiece(new Piece(this, red, make_tuple(i, j)));
+			tiles[j][i]->setPiece(new Piece(this, red, make_tuple(i, j)));
 		}
 	}
 	
@@ -49,7 +49,7 @@ void Board::initializePieces()
 	for (int i = 0; i <  8; i++) {
 		int startIndex = 6 - (i % 2);
 		for (int j = startIndex; j < 8; j+=2) {
-			tiles[i][j]->setPiece(new Piece(this, black, make_tuple(i, j)));
+			tiles[j][i]->setPiece(new Piece(this, black, make_tuple(i, j)));
 		}
 	}
 }

@@ -72,43 +72,43 @@ set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	
 	// intialize the forward direction and coordinate bound
 	int moveDirection;
-	int maxX;
+	int maxY;
 	
 	// set directions for movement based on team
 	if (team == red) {
 		moveDirection = 1;
-		maxX = 7;
+		maxY = 7;
 	} else {
 		moveDirection = -1;
-		maxX = 0;
+		maxY = 0;
 	}
 	
 	// y coordinate of attempted diagonal moves
 	// piece is not a king so can only move in one direction
-	int attemptX = get<0>(coordinate) + moveDirection;
+	int attemptY = get<1>(coordinate) + moveDirection;
 	
 	// x coordinates of attempted diagonal moves
-	int attempt1Y = get<1>(coordinate) + 1;
-	int attempt2Y = get<1>(coordinate) - 1;
+	int attempt1X = get<0>(coordinate) + 1;
+	int attempt2X = get<0>(coordinate) - 1;
 	
 	cout << "Team is " << team << endl;
-	cout << "Attempting 1 (down) as " << attemptX << ", " << attempt1Y << endl;
-	cout << "Attempting 2 (up) as " << attemptX << ", " << attempt2Y << endl;
+	cout << "Attempting 1 (right) as " << attempt1X << ", " << attemptY << endl;
+	cout << "Attempting 2 (left) as " << attempt2X << ", " << attemptY << endl;
 	
 	// check if attack move is in bounds on the y-axis
-	if ((team == red && attemptX <= maxX) || (team == black && attemptX >= maxX)) {
+	if ((team == red && attemptY <= maxY) || (team == black && attemptY >= maxY)) {
 		// check if down move is valid
-		if (attempt1Y <= 7 && !(board->getTiles()[attemptX][attempt1Y]->hasPieceOnTile())) {
+		if (attempt1X <= 7 && !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())) {
 			// add the down move to the set of available moves
 			deque<tuple<int,int> > move;
-			move.push_front(make_tuple(attemptX, attempt1Y));
+			move.push_front(make_tuple(attempt1X, attemptY));
 			availableSingleMoves.insert(move);
 		}
 		// check if up move is valid
-		if (attemptX >= 0 && !(board->getTiles()[attemptX][attempt2Y]->hasPieceOnTile())) {
+		if (attempt2X >= 0 && !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())) {
 			// add the up move to the set of available moves
 			deque<tuple<int,int> > move;
-			move.push_front(make_tuple(attemptX, attempt2Y));
+			move.push_front(make_tuple(attempt2X, attemptY));
 			availableSingleMoves.insert(move);
 		}
 	}
