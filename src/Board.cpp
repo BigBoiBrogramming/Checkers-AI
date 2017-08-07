@@ -38,18 +38,18 @@ void Board::initializeTiles()
 void Board::initializePieces()
 {
 	// initialize red pieces
-	for (int i = 0; i <  3; i++) {
-		int spacer = (i) % 2;
-		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->setPiece(new Piece(this, red, make_tuple(i, j)));
+	for (int i = 0; i <  8; i++) {
+		int startIndex = i % 2;
+		for (int j = startIndex; j < 3; j+=2) {
+			tiles[j][i]->setPiece(new Piece(this, red, make_tuple(i, j)));
 		}
 	}
 	
 	// initialize black pieces
-	for (int i = 5; i <  8; i++) {
-		int spacer = (i) % 2;
-		for (int j = 0; j < 7; j += 2) {
-			tiles[i][j+spacer]->setPiece(new Piece(this, black, make_tuple(i, j)));
+	for (int i = 0; i <  8; i++) {
+		int startIndex = 6 - (i % 2);
+		for (int j = startIndex; j < 8; j+=2) {
+			tiles[j][i]->setPiece(new Piece(this, black, make_tuple(i, j)));
 		}
 	}
 }
