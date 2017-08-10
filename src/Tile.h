@@ -15,14 +15,14 @@ public:
 	~Tile();
 	bool hasPieceOnTile();
 	void setPiece(Piece* p);
-	Piece* removePieceFromTile();
+	void removePieceFromTile();
 	tuple<int,int> getCoordinates();
 	Piece* getPiece();
 
 private:
 	bool pieceOnTile;
 	Piece* piece;
-	tuple<int,int> coordinate;
+	tuple<int,int> coordinates;
 };
 
 #endif

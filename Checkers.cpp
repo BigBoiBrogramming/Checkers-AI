@@ -48,15 +48,20 @@ int main(int argc, char *argv[])
 	
 	// play the game until one player runs out of pieces
 	while (redPlayer->getPiecesRemaining() > 0 && blackPlayer->getPiecesRemaining() > 0) {
-		for (auto player : players) {
+		// for each of the players
+		for (int i = 0; i < 2; i++) {
+			cout << "game\n\n\n\n" << endl;
+			Player* currentPlayer = players[i];
+			Player* enemyPlayer = players[!i];
+			
 			// print the board
 			board.print();
 			
 			// prompt the user to enter coordinates
-			cout << "\n\n" << teams[player->getTeam()] << " Player's turn. ";
+			cout << "\n\n" << teams[currentPlayer->getTeam()] << " Player's turn. ";
 			
 			cout << "Select coordinates of a friendly piece (x y) to see available moves: ";
-			set<deque<tuple<int,int> > > availableMoves = selectPieceAndGetMoves(board, player);
+			set<deque<tuple<int,int> > > availableMoves = selectPieceAndGetMoves(board, currentPlayer);
 			
 			// retrieve the map of available moves
 			map<int, deque<tuple<int,int> > > moveMap = displayMovesAndReturnMap(availableMoves);
@@ -65,7 +70,15 @@ int main(int argc, char *argv[])
 			int moveNumber = getMoveNumber(moveMap.size());
 			deque<tuple<int,int> > finalMove = moveMap[moveNumber];
 			
-			// TODO: move to the space and delete all in between pieces along the way
+			// move to the space and delete all attacked pieces along the way
+			tuple<int,int> pieceCoordinates = finalMove.front();
+			finalMove.pop_front();
+			int numCaptured = board.getTiles()[get<1>(pieceCoordinates)][get<0>(pieceCoordinates)]->getPiece()->move(finalMove);
+			
+			// update enemy player's piecesRemaining count
+			for (int j = 0; j < numCaptured; j++) {
+				enemyPlayer->decrementPiecesRemaining();
+			}
 		}
 	}
 	

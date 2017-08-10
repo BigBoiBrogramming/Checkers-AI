@@ -1,6 +1,6 @@
 #include "King.h"
 
-King::King(Board* board, Team team, tuple<int,int> coordinate) : Piece (board, team, coordinate)
+King::King(Board* board, Team team, tuple<int,int> coordinates) : Piece (board, team, coordinates)
 {
 }
 
@@ -24,11 +24,11 @@ set<deque<tuple<int,int> > > King::getAvailableSingleSquareMoves(tuple<int,int>&
 		}
 		
 		// y coordinate of attempted diagonal moves
-		int attemptY = get<1>(coordinate) + moveDirection;
+		int attemptY = get<1>(coordinates) + moveDirection;
 		
-		// x coordinates of attempted diagonal moves
-		int attempt1X = get<0>(coordinate) + 1;
-		int attempt2X = get<0>(coordinate) - 1;
+		// x coordinate of attempted diagonal moves
+		int attempt1X = get<0>(coordinates) + 1;
+		int attempt2X = get<0>(coordinates) - 1;
 		
 		// check if attack move is in bounds on the y-axis
 		if ((attemptY >= 0) && (attemptY <= 7)) {
@@ -60,7 +60,7 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 	
 	// iterate through both possible directions
 	for (int i = 0; i < 2; i++) {
-		// a set containing coordinate of the first moves in leap chains
+		// a set containing coordinates of the first moves in leap chains
 		set<tuple<int,int> > possiblePathStarters;
 		
 		// intialize the forward direction and coordinate bound
@@ -81,7 +81,7 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 		// y coordinate of attempted attacks (position after jumping)
 		int attemptY = get<1>(currentCoord) + moveDirection;
 		
-		// x coordinates of attempted attacks (position after jumping)
+		// x coordinate of attempted attacks (position after jumping)
 		int attempt1X = get<0>(currentCoord) + 2;
 		int attempt2X = get<0>(currentCoord) - 2;
 		
@@ -92,7 +92,7 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 			&& !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())
 			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->hasPieceOnTile())
 			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->getPiece()->getTeam() != team)) {
-				// add the right side attack coordinate to the set of possible path starters
+				// add the right side attack coordinates to the set of possible path starters
 				possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 			}
 			// check if left side attack move is valid
@@ -100,7 +100,7 @@ set<deque<tuple<int,int> > > King::getAvailableAttacks(tuple<int,int>& currentCo
 			&& !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())
 			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->hasPieceOnTile())
 			&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->getPiece()->getTeam() != team)) {
-				// add the left side attack coordinate to the set of possible path starters
+				// add the left side attack coordinates to the set of possible path starters
 				possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 			}
 		}

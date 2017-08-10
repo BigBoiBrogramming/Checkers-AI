@@ -103,8 +103,12 @@ map<int, deque<tuple<int,int> > > displayMovesAndReturnMap(set<deque<tuple<int,i
 	for (auto deque : availableMoves) {
 		cout << moveCounter << ": ";
 		for (auto move : deque) {
-			cout << "->(" << get<0>(move) << ", " << get<1>(move) << ")" << endl;
+			if (move != deque.front()) {
+				cout << "->(" << get<0>(move) << ", " << get<1>(move) << ")";
+			}
 		}
+		cout << endl;
+		
 		// insert the move into the map
 		moveMap.insert(make_pair(moveCounter, deque));
 		

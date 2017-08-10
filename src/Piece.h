@@ -15,19 +15,19 @@ class Piece {
 public:
 	Piece(Board* board, Team team, tuple<int,int> coordinates);
 	virtual ~Piece();
-	void move(tuple<int,int> endTileCoord);
+	int move(deque<tuple<int,int> >& move);
 	set<deque<tuple<int,int> > > getAvailableMoves();
 	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
 	void setTeam(Team& t);
-	tuple<int,int> getCoordinate();
+	tuple<int,int> getCoordinates();
 
 protected:
 	virtual set<deque<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
 	virtual set<deque<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
 	Team team;
 	Board* board;
-	tuple<int,int> coordinate;
+	tuple<int,int> coordinates;
 };
 
 #endif

@@ -1,28 +1,45 @@
 #include "Piece.h"
 
-Piece::Piece(Board* board, Team team, tuple<int,int> coordinate)
+Piece::Piece(Board* board, Team team, tuple<int,int> coordinates)
 {
 	this->board = board;
 	this->team = team;
-	this->coordinate = coordinate;
+	this->coordinates = coordinates;
 }
 
 Piece::~Piece()
 {
 }
 
-// move the tile to the specified coordinate
-void Piece::move(tuple<int,int> endTileCoord)
+// move piece from tile to tile and returns the number of 'captured' pieces
+int Piece::move(deque<tuple<int,int> >& finalMove)
 {
-	if (board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->hasPieceOnTile()) {
-		AlreadyHasPieceException e = AlreadyHasPieceException(get<0>(coordinate), get<1>(coordinate));
-		cerr << e.what();
-		exit(1);
+	int numCaptured = 0;
+	
+	for (auto move : finalMove) {
+		if (board->getTiles()[get<1>(move)][get<0>(move)]->hasPieceOnTile()) {
+			AlreadyHasPieceException e = AlreadyHasPieceException(get<0>(move), get<1>(move));
+			cerr << e.what();
+			exit(1);
+		}
+		
+		// move the piece
+		board->getTiles()[get<1>(coordinates)][get<0>(coordinates)]->setPiece(NULL);
+		board->getTiles()[get<1>(move)][get<0>(move)]->setPiece(this);
+		
+		// capture pieces if move was an attack
+		if (abs(get<1>(coordinates) - get<1>(move)) > 1) {
+			int capturedX = (get<0>(coordinates) + get<0>(move)) / 2;
+			int capturedY = (get<1>(coordinates) + get<1>(move)) / 2;
+			board->getTiles()[capturedY][capturedX]->removePieceFromTile();
+			numCaptured++;
+		}
+		
+		// set the piece's coordinates to the new location
+		coordinates = move;
 	}
 	
-	board->getTiles()[get<1>(coordinate)][get<0>(coordinate)]->setPiece(NULL);
-	board->getTiles()[get<1>(endTileCoord)][get<0>(endTileCoord)]->setPiece(this);
-	coordinate = endTileCoord;
+	return numCaptured;
 }
 
 // returns a set containing deque of moves
@@ -33,18 +50,22 @@ set<deque<tuple<int,int> > > Piece::getAvailableMoves()
 	set<deque<tuple<int,int> > > availableMoves;
 	
 	// get single square moves
-	set<deque<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinate);
+	set<deque<tuple<int,int> > > singleSquareMoves = getAvailableSingleSquareMoves(coordinates);
 	
 	// add single square moves to available moves
 	for (auto singleSquareMove : singleSquareMoves) {
+		// add on the starting coordinates to each move
+		singleSquareMove.push_front(coordinates);
 		availableMoves.insert(singleSquareMove);
 	}
 	
 	// get attack moves
-	set<deque<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinate);
+	set<deque<tuple<int,int> > > attackMoves = getAvailableAttacks(coordinates);
 	
 	// add single square moves to available moves
 	for (auto attackMove : attackMoves) {
+		// add on the starting coordinates to each move
+		attackMove.push_front(coordinates);
 		availableMoves.insert(attackMove);
 	}
 	
@@ -72,11 +93,11 @@ set<deque<tuple<int,int> > > Piece::getAvailableSingleSquareMoves(tuple<int,int>
 	
 	// y coordinate of attempted diagonal moves
 	// piece is not a king so can only move in one direction
-	int attemptY = get<1>(coordinate) + moveDirection;
+	int attemptY = get<1>(coordinates) + moveDirection;
 	
 	// x coordinates of attempted diagonal moves
-	int attempt1X = get<0>(coordinate) + 1;
-	int attempt2X = get<0>(coordinate) - 1;
+	int attempt1X = get<0>(coordinates) + 1;
+	int attempt2X = get<0>(coordinates) - 1;
 	
 	// check if attack move is in bounds on the y-axis
 	if ((team == red && attemptY <= maxY) || (team == black && attemptY >= maxY)) {
@@ -138,7 +159,7 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 		&& !(board->getTiles()[attemptY][attempt1X]->hasPieceOnTile())
 		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->hasPieceOnTile())
 		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt1X-1]->getPiece()->getTeam() != team)) {
-			// add the right side attack coordinate to the set of possible path starters
+			// add the right side attack coordinates to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt1X, attemptY));
 		}
 		// check if left side attack move is valid
@@ -146,7 +167,7 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 		&& !(board->getTiles()[attemptY][attempt2X]->hasPieceOnTile())
 		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->hasPieceOnTile())
 		&& (board->getTiles()[attemptY-(moveDirection/2)][attempt2X+1]->getPiece()->getTeam() != team)) {
-			// add the left side attack coordinate to the set of possible path starters
+			// add the left side attack coordinates to the set of possible path starters
 			possiblePathStarters.insert(make_tuple(attempt2X, attemptY));
 		}
 	}
@@ -199,7 +220,7 @@ void Piece::setTeam(Team& t)
 }
 
 // return the coordinates
-tuple<int,int> Piece::getCoordinate()
+tuple<int,int> Piece::getCoordinates()
 {
-	return coordinate;
+	return coordinates;
 }

@@ -1,6 +1,6 @@
 #include "Tile.h"
 
-Tile::Tile(tuple<int,int> coord) : coordinate(coord)
+Tile::Tile(tuple<int,int> coord) : coordinates(coord)
 {
 	piece = NULL;
 	pieceOnTile = false;
@@ -33,31 +33,30 @@ void Tile::setPiece(Piece* p)
 }
 
 // removes and returns pointer to the piece on the tile
-Piece* Tile::removePieceFromTile()
+void Tile::removePieceFromTile()
 {
 	if (!pieceOnTile) {
-		PieceDoesNotExistException e = PieceDoesNotExistException(get<0>(coordinate), get<1>(coordinate));
+		PieceDoesNotExistException e = PieceDoesNotExistException(get<0>(coordinates), get<1>(coordinates));
 		cerr << e.what();
 		exit(1);
 	}
 	
 	pieceOnTile = false;
-	Piece* tempPiece = piece;
+	delete piece;
 	piece = NULL;
-	return tempPiece;
 }
 
-// returns the coordinate
+// returns the coordinates
 tuple<int,int> Tile::getCoordinates()
 {
-	return coordinate;
+	return coordinates;
 }
 
 // returns the piece
 Piece* Tile::getPiece()
 {
 	if (!pieceOnTile) {
-		PieceDoesNotExistException e = PieceDoesNotExistException(get<0>(coordinate), get<1>(coordinate));
+		PieceDoesNotExistException e = PieceDoesNotExistException(get<0>(coordinates), get<1>(coordinates));
 		cerr << e.what();
 		exit(1);
 	}
