@@ -46,12 +46,6 @@ void Tile::removePieceFromTile()
 	piece = NULL;
 }
 
-// returns the coordinates
-tuple<int,int> Tile::getCoordinates()
-{
-	return coordinates;
-}
-
 // returns the piece
 Piece* Tile::getPiece()
 {

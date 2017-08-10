@@ -213,12 +213,6 @@ Team Piece::getTeam()
 	return team;
 }
 
-// set the team
-void Piece::setTeam(Team& t)
-{
-	team = t;
-}
-
 // return the coordinates
 tuple<int,int> Piece::getCoordinates()
 {

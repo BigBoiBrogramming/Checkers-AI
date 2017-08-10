@@ -1,12 +1,7 @@
 #include <map>
 #include "src/Game.h"
-#include "src/Player.h"
-#include "src/Board.h"
 
 using namespace std;
-
-bool inputPlayerType(int playerNumber);
-void inputName(Player& p);
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +16,7 @@ int main(int argc, char *argv[])
 	Player* redPlayer;
 	if (!redPlayerIsAI) {
 		string name = inputName();
-		redPlayer = new Player(1, name, red);
+		redPlayer = new Player(name, red);
 	} else {
 		// initialize Player 1 as AI 
 	}
@@ -35,7 +30,7 @@ int main(int argc, char *argv[])
 	Player* blackPlayer;
 	if (!blackPlayerIsAI) {
 		string name = inputName();
-		blackPlayer = new Player(2, name, black);
+		blackPlayer = new Player(name, black);
 	} else {
 		// initialize Player 2 as AI 
 	}

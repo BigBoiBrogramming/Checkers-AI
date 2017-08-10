@@ -1,9 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
-#include <string>
-#include <algorithm>
 #include "Board.h"
 #include "Player.h"
 

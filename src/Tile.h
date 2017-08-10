@@ -2,8 +2,8 @@
 #define TILE_H
 
 #include <iostream>
-#include "Piece.h"
 #include "exceptions/PieceDoesNotExistException.h"
+#include "Piece.h"
 
 using namespace std;
 
@@ -16,7 +16,6 @@ public:
 	bool hasPieceOnTile();
 	void setPiece(Piece* p);
 	void removePieceFromTile();
-	tuple<int,int> getCoordinates();
 	Piece* getPiece();
 
 private:

@@ -1,11 +1,11 @@
 #ifndef PIECE_H
 #define PIECE_H
 
-#include <set>
 #include <deque>
-#include "Team.h"
+#include <set>
 #include "Board.h"
 #include "exceptions/AlreadyHasPieceException.h"
+#include "Team.h"
 
 class Board;
 
@@ -19,12 +19,12 @@ public:
 	set<deque<tuple<int,int> > > getAvailableMoves();
 	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
-	void setTeam(Team& t);
 	tuple<int,int> getCoordinates();
 
 protected:
 	virtual set<deque<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
 	virtual set<deque<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
+	
 	Team team;
 	Board* board;
 	tuple<int,int> coordinates;
