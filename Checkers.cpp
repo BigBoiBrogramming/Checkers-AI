@@ -79,8 +79,23 @@ int main(int argc, char *argv[])
 			for (int j = 0; j < numCaptured; j++) {
 				enemyPlayer->decrementPiecesRemaining();
 			}
+			
+			// break if the enemy has no more pieces
+			if (enemyPlayer->getPiecesRemaining() == 0) {
+				break;
+			}
 		}
 	}
+	
+	cout << "\n\n" << endl;
+	
+	// determine winner
+	if (players[0]->getPiecesRemaining() == 0) {
+		cout << teams[1];
+	} else {
+		cout << teams[0];
+	}
+	cout << " Player wins!" << endl;
 	
 	// deallocate players
 	delete redPlayer;
