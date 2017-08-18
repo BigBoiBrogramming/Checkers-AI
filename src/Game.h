@@ -96,6 +96,8 @@ map<int, deque<tuple<int,int> > > displayMovesAndReturnMap(set<deque<tuple<int,i
 	cout << "Select move:" << endl;
 	int moveCounter = 1;
 	
+	cout << "0: Select a different piece." << endl;
+	
 	// iterate through each move set
 	for (auto deque : availableMoves) {
 		cout << moveCounter << ": ";
@@ -122,7 +124,7 @@ int getMoveNumber(int numMoves)
 	cin >> moveNumber;
 	
 	// repeat until the user enters valid coordinates
-	while(!cin || moveNumber < 1 || moveNumber > numMoves) {
+	while(!cin || moveNumber < 0 || moveNumber > numMoves) {
 		cout << "Please enter a valid move number: ";
 		cin.clear();
 		cin.ignore();

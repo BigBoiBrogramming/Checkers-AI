@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 		string name = inputName();
 		redPlayer = new Player(name, red);
 	} else {
-		// initialize Player 1 as AI 
+		// TODO: initialize Player 1 as AI 
 	}
 	
 	// set up Player 2
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		string name = inputName();
 		blackPlayer = new Player(name, black);
 	} else {
-		// initialize Player 2 as AI 
+		// TODO: initialize Player 2 as AI 
 	}
 	
 	cout << endl;
@@ -45,24 +45,32 @@ int main(int argc, char *argv[])
 	while (redPlayer->getPiecesRemaining() > 0 && blackPlayer->getPiecesRemaining() > 0) {
 		// for each of the players
 		for (int i = 0; i < 2; i++) {
-			cout << "game\n\n\n\n" << endl;
+			cout << endl;
 			Player* currentPlayer = players[i];
 			Player* enemyPlayer = players[!i];
 			
-			// print the board
-			board.print();
 			
-			// prompt the user to enter coordinates
-			cout << "\n\n" << teams[currentPlayer->getTeam()] << " Player's turn. ";
+			// initialize variables needed for making a move
+			map<int, deque<tuple<int,int> > > moveMap;
+			int moveNumber = 0;
 			
-			cout << "Select coordinates of a friendly piece (x y) to see available moves: ";
-			set<deque<tuple<int,int> > > availableMoves = selectPieceAndGetMoves(board, currentPlayer);
+			while (moveNumber == 0) {
+				// print the board
+				board.print();
+				
+				// prompt the user to enter coordinates
+				cout << "\n\n" << teams[currentPlayer->getTeam()] << " Player's turn. ";
+				
+				cout << "Select coordinates of a friendly piece (x y) to see available moves: ";
+				set<deque<tuple<int,int> > > availableMoves = selectPieceAndGetMoves(board, currentPlayer);
+				
+				// retrieve the map of available moves
+				moveMap = displayMovesAndReturnMap(availableMoves);
+				
+				// let the user pick a move
+				moveNumber = getMoveNumber(moveMap.size());
+			}
 			
-			// retrieve the map of available moves
-			map<int, deque<tuple<int,int> > > moveMap = displayMovesAndReturnMap(availableMoves);
-			
-			// let the user pick a move
-			int moveNumber = getMoveNumber(moveMap.size());
 			deque<tuple<int,int> > finalMove = moveMap[moveNumber];
 			
 			// move to the space and delete all attacked pieces along the way
