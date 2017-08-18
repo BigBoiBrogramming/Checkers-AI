@@ -41,7 +41,7 @@ void inputCoordinates(int& x, int& y, Board& board, Team team)
 	while(!cin || x < 0 || x > 7 || y < 0 || y > 7) {
 		cout << "Please enter valid coordinates separated by a space (x y): ";
 		cin.clear();
-		cin.ignore();
+		cin.ignore(200, '\n');
 		cin >> x >> y;
 	}
 	
