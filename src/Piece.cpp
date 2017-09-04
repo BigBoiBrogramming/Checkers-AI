@@ -192,19 +192,25 @@ set<deque<tuple<int,int> > > Piece::getAvailableAttacks(tuple<int,int>& currentC
 	return possibleAttackChains;
 }
 
-// print the piece
+// make function call to print the piece
 ostream& operator<<(ostream& os, const Piece& p)
 {
+	p.printMyself();
+	
+	return os;
+}
+
+// print the piece
+void Piece::printMyself() const
+{
 	string color;
-	if (p.team == red) {
+	if (team == red) {
 		color = "R";
 	} else {
 		color = "B";
 	}
 	
-	os << "n" << color;
-	
-	return os;
+	cout << "n" << color;
 }
 
 // return the team

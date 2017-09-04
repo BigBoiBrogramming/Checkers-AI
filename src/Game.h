@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include "Board.h"
+#include "King.h"
 #include "Player.h"
 
 using namespace std;
@@ -132,6 +133,24 @@ int getMoveNumber(int numMoves)
 	}
 	
 	return moveNumber;
+}
+
+// update a piece at the given coordinates to a king if needed
+void updateToKingIfNeeded(Board& board, tuple<int,int>& endCoordinates, Team team)
+{
+	int x = get<0>(endCoordinates);
+	int y = get<1>(endCoordinates);
+	
+	// check if piece is not already a king
+	if (King* kingCheck = dynamic_cast<King*>(board.getTiles()[y][x]->getPiece())) {
+		return;
+	}
+	
+	// change the piece to a king if it has reached the end of the board
+	if ((team == red && y == 7) || (team == black && y == 0)) {
+		board.getTiles()[y][x]->removePieceFromTile();
+		board.getTiles()[y][x]->setPiece(new King(&board, team, endCoordinates));
+	}
 }
 
 #endif

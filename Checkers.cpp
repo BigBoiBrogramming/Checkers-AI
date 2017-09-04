@@ -75,8 +75,12 @@ int main(int argc, char *argv[])
 			
 			// move to the space and delete all attacked pieces along the way
 			tuple<int,int> pieceCoordinates = finalMove.front();
+			tuple<int,int> endCoordinates = finalMove.back();
 			finalMove.pop_front();
 			int numCaptured = board.getTiles()[get<1>(pieceCoordinates)][get<0>(pieceCoordinates)]->getPiece()->move(finalMove);
+			
+			// change piece to a king if appropriate
+			updateToKingIfNeeded(board, endCoordinates, currentPlayer->getTeam());
 			
 			// update enemy player's piecesRemaining count
 			for (int j = 0; j < numCaptured; j++) {

@@ -16,7 +16,7 @@ public:
 	Piece(Board* board, Team team, tuple<int,int> coordinates);
 	virtual ~Piece();
 	int move(deque<tuple<int,int> >& move);
-	set<deque<tuple<int,int> > > getAvailableMoves();
+	virtual set<deque<tuple<int,int> > > getAvailableMoves();
 	friend ostream& operator<<(ostream& os, const Piece& p);
 	Team getTeam();
 	tuple<int,int> getCoordinates();
@@ -24,6 +24,7 @@ public:
 protected:
 	virtual set<deque<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
 	virtual set<deque<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
+	virtual void printMyself() const;
 	
 	Team team;
 	Board* board;
