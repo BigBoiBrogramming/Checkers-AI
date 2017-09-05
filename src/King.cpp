@@ -185,12 +185,11 @@ bool King::pieceAlreadyJumped(set<tuple<int,int> >& jumpedCoordinates, pair<int,
 // print the piece
 void King::printMyself() const
 {
-	string color;
-	if (team == red) {
-		color = "R";
-	} else {
-		color = "B";
-	}
+	cout << "\033[33mk\033[0m";
 	
-	cout << "k" << color;
+	if (team == red) {
+		cout << "\033[31mR\033[0m";
+	} else {
+		cout << "B";
+	}
 }
