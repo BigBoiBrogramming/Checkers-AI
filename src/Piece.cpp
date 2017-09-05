@@ -203,14 +203,11 @@ ostream& operator<<(ostream& os, const Piece& p)
 // print the piece
 void Piece::printMyself() const
 {
-	string color;
 	if (team == red) {
-		color = "R";
+		cout << "\033[31mnR\033[0m";
 	} else {
-		color = "B";
+		cout << "nB";
 	}
-	
-	cout << "n" << color;
 }
 
 // return the team

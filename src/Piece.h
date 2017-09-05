@@ -23,7 +23,7 @@ public:
 
 protected:
 	virtual set<deque<tuple<int,int> > > getAvailableSingleSquareMoves(tuple<int,int>& currentCoord);
-	virtual set<deque<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
+	set<deque<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord);
 	virtual void printMyself() const;
 	
 	Team team;
