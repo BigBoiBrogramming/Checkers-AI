@@ -15,6 +15,8 @@ public:
 	void initializePieces();
 	void print();
 	Tile*** getTiles();
+	string getBoardString();
+	Board getDeepCopy();
 	
 private:
 	Tile*** tiles;
