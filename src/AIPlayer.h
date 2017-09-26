@@ -13,9 +13,9 @@ public:
 	~AIPlayer();
 	deque<tuple<int,int> > getMoveInput(Board& b);
 	void writeBoardStatesToFile(bool wonGame);
+	map<string, tuple<double,double> >& getWinProbabilities();
 	
 private:
-	map<string, tuple<double,double> > getWinProbabilities();
 	deque<tuple<int,int> > getBestMove(set<deque<tuple<int,int> > >& allMoves, Board& b);
 	string getFinalBoardState(deque<tuple<int,int> > move, Board& b);
 	void updateToKingIfNeeded(Board& b, tuple<int,int>& endCoordinates);

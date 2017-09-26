@@ -117,7 +117,7 @@ void AIPlayer::updateToKingIfNeeded(Board& b, tuple<int,int>& endCoordinates)
 }
 
 // returns the map of win probabilities
-map<string, tuple<double,double> > AIPlayer::getWinProbabilities()
+map<string, tuple<double,double> >& AIPlayer::getWinProbabilities()
 {
 	return winProbabilities;
 }
@@ -127,7 +127,7 @@ void AIPlayer::writeBoardStatesToFile(bool wonGame)
 	// open the file
 	ofstream output("WinProbabilities.txt");
 	
-	int valueToAddToRed, valueToAddToBlack;
+	double valueToAddToRed, valueToAddToBlack;
 	if (wonGame) {
 		if (team == red) {
 			valueToAddToRed = 1;
@@ -146,19 +146,25 @@ void AIPlayer::writeBoardStatesToFile(bool wonGame)
 		}
 	}
 	
-	// for each board state encountered
+	map<string, tuple<double,double> > winProbabilities;
+	
+	// add each board state found this game to win probabilites (updated old states when needed)
 	for (auto boardState : thisGamesBoardStates) {
-		output << boardState << " ";
-		
 		// if the board state has never been seen by the AI before
 		if (winProbabilities.find(boardState) == winProbabilities.end()) {
-			output << valueToAddToRed << " " << valueToAddToBlack << endl;
+			winProbabilities.insert(make_pair(boardState, make_pair(valueToAddToRed, valueToAddToBlack)));
 		} else {
 			tuple<double,double> oldValues = winProbabilities.find(boardState)->second;
 			double newRedVal = get<0>(oldValues) + valueToAddToRed;
 			double newBlackVal = get<1>(oldValues) + valueToAddToBlack;
-			output << newRedVal << " " << newBlackVal << endl;
+			winProbabilities[boardState] = make_pair(newRedVal, newBlackVal);
 		}
+	}
+	
+	// for each board value in win probabilities
+	for (auto group : winProbabilities) {
+		output << group.first << " ";
+		output << get<0>(group.second) << " " << get<1>(group.second) << endl;
 	}
 	
 	// close the file

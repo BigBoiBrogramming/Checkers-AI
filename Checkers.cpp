@@ -107,6 +107,8 @@ int main(int argc, char *argv[])
 	}
 	cout << " wins!" << endl;
 	
+	board.print();
+	
 	// write the board states to the data file
 	// if player one is AI
 	if (AIPlayer* aiCheck = dynamic_cast<AIPlayer*>(players[0])) {
