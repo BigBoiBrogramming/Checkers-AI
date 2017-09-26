@@ -13,6 +13,7 @@ private:
 	set<deque<tuple<int,int> > > getAvailableAttacks(tuple<int,int>& currentCoord, set<tuple<int,int> >& jumpedCoordinates);
 	bool pieceAlreadyJumped(set<tuple<int,int> >& jumpedCoordinates, pair<int,int> checkCoordinate) const;
 	void printMyself() const;
+	string getStringRepresentation();
 };
 
 #endif

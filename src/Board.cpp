@@ -81,3 +81,53 @@ Tile*** Board::getTiles()
 {
 	return tiles;
 }
+
+// return a string representation of the board
+string Board::getBoardString()
+{
+	string boardString = "";
+	
+	for (int i = 7; i >= 0; i--) {
+		for (int j = 0; j < 8; j++) {
+			// if there is no piece
+			if (!tiles[i][j]->hasPieceOnTile()) {
+				boardString += "--";
+			} else {
+				boardString += tiles[i][j]->getPiece()->getStringRepresentation();
+			}
+			// if the end of the row is reached
+			if (j == 7) {
+				boardString += "||";
+			}
+		}
+	}
+	
+	return boardString;
+}
+
+Board Board::getDeepCopy()
+{
+	Board bCopy = Board();
+	
+	// delete all the default pieces
+	for (int i = 7; i >= 0; i--) {
+		for (int j = 0; j < 8; j++) {
+			if (bCopy.tiles[i][j]->hasPieceOnTile()) {
+				bCopy.tiles[i][j]->removePieceFromTile();
+			}
+		}
+	}
+	
+	// add in all the new pieces
+	for (int i = 7; i >= 0; i--) {
+		for (int j = 0; j < 8; j++) {
+			if (tiles[i][j]->hasPieceOnTile()) {
+				Piece* realPiece = tiles[i][j]->getPiece();
+				Piece* pCopy = new Piece(&bCopy, realPiece->getTeam(), realPiece->getCoordinates());
+				bCopy.tiles[i][j]->setPiece(pCopy);
+			}
+		}
+	}
+	
+	return bCopy;
+}

@@ -1,6 +1,6 @@
 #include "King.h"
 
-King::King(Board* board, Team team, tuple<int,int> coordinates) : Piece (board, team, coordinates)
+King::King(Board* board, Team team, tuple<int,int> coordinates) : Piece(board, team, coordinates)
 {
 }
 
@@ -191,5 +191,15 @@ void King::printMyself() const
 		cout << "\033[31mR\033[0m";
 	} else {
 		cout << "B";
+	}
+}
+
+// returns a string representation of the piece
+string King::getStringRepresentation()
+{
+	if (team == red) {
+		return "kR";
+	} else {
+		return "kB";
 	}
 }

@@ -221,3 +221,13 @@ tuple<int,int> Piece::getCoordinates()
 {
 	return coordinates;
 }
+
+// returns a string representation of the piece
+string Piece::getStringRepresentation()
+{
+	if (team == red) {
+		return "nR";
+	} else {
+		return "nB";
+	}
+}

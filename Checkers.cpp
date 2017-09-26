@@ -1,5 +1,8 @@
 #include <map>
 #include "src/Game.h"
+#include "src/Player.h"
+#include "src/AIPlayer.h"
+#include <fstream>
 
 using namespace std;
 
@@ -7,39 +10,42 @@ int main(int argc, char *argv[])
 {
 	Board board = Board();
 	
+	// retrieve the key of win probabilities
+	map<string, tuple<double,double> > winProbabilities;
+	ifstream infile("WinProbabilities.txt");
+	// add in each line of existing data
+	string boardstate;
+	int redWins, blackWins;
+	while (infile >> boardstate >> redWins >> blackWins)
+	{
+		winProbabilities.insert(make_pair(boardstate, make_pair(redWins, blackWins)));
+	}
+	infile.close();
+	
 	// set up Player 1
 	bool redPlayerIsAI = inputPlayerType(1);
-	if (redPlayerIsAI) {
-		cout << "AI for this program is not yet supported. Exiting program." << endl;
-		exit(1);
-	}
 	Player* redPlayer;
 	if (!redPlayerIsAI) {
 		string name = inputName();
 		redPlayer = new Player(name, red);
 	} else {
-		// TODO: initialize Player 1 as AI 
+		redPlayer = new AIPlayer("Player 1 (AI)", red, winProbabilities);
 	}
 	
 	// set up Player 2
 	bool blackPlayerIsAI = inputPlayerType(2);
-	if (blackPlayerIsAI) {
-		cout << "AI for this program is not yet supported. Exiting program." << endl;
-		exit(1);
-	}
 	Player* blackPlayer;
 	if (!blackPlayerIsAI) {
 		string name = inputName();
 		blackPlayer = new Player(name, black);
 	} else {
-		// TODO: initialize Player 2 as AI 
+		blackPlayer = new AIPlayer("Player 2 (AI)", black, winProbabilities);
 	}
 	
 	cout << endl;
 	
 	// create an array of the two players
 	Player* players[] = {redPlayer, blackPlayer};
-	string teams[] = {"Red", "Black"};
 	
 	// play the game until one player runs out of pieces
 	while (redPlayer->getPiecesRemaining() > 0 && blackPlayer->getPiecesRemaining() > 0) {
@@ -49,29 +55,15 @@ int main(int argc, char *argv[])
 			Player* currentPlayer = players[i];
 			Player* enemyPlayer = players[!i];
 			
+			deque<tuple<int,int> > finalMove = currentPlayer->getMoveInput(board);
 			
-			// initialize variables needed for making a move
-			map<int, deque<tuple<int,int> > > moveMap;
-			int moveNumber = 0;
-			
-			while (moveNumber == 0) {
-				// print the board
-				board.print();
-				
-				// prompt the user to enter coordinates
-				cout << "\n\n" << teams[currentPlayer->getTeam()] << " Player's turn. ";
-				
-				cout << "Select coordinates of a friendly piece (x y) to see available moves: ";
-				set<deque<tuple<int,int> > > availableMoves = selectPieceAndGetMoves(board, currentPlayer);
-				
-				// retrieve the map of available moves
-				moveMap = displayMovesAndReturnMap(availableMoves);
-				
-				// let the user pick a move
-				moveNumber = getMoveNumber(moveMap.size());
+			// check to see if no moves are available
+			if (finalMove.size() == 0) {
+				cout << currentPlayer->getName() << " has no available moves.";
+				cout << "The result of the game is a draw!" << endl;
+				delete redPlayer;
+				delete blackPlayer;
 			}
-			
-			deque<tuple<int,int> > finalMove = moveMap[moveNumber];
 			
 			// move to the space and delete all attacked pieces along the way
 			tuple<int,int> pieceCoordinates = finalMove.front();
@@ -81,6 +73,13 @@ int main(int argc, char *argv[])
 			
 			// change piece to a king if appropriate
 			updateToKingIfNeeded(board, endCoordinates, currentPlayer->getTeam());
+			
+			// add the updated board state to each AI
+			currentPlayer->getThisGamesBoardStates().insert(board.getBoardString());
+			enemyPlayer->getThisGamesBoardStates().insert(board.getBoardString());
+			
+			cout << currentPlayer->getThisGamesBoardStates().size() << endl;
+			cout << enemyPlayer->getThisGamesBoardStates().size() << endl;
 			
 			// update enemy player's piecesRemaining count
 			for (int j = 0; j < numCaptured; j++) {
@@ -96,13 +95,28 @@ int main(int argc, char *argv[])
 	
 	cout << "\n\n" << endl;
 	
+	bool player1Wins;
+	
 	// determine winner
-	if (players[0]->getPiecesRemaining() == 0) {
-		cout << teams[1];
+	if (players[1]->getPiecesRemaining() == 0) {
+		cout << players[0]->getName();
+		player1Wins = true;
 	} else {
-		cout << teams[0];
+		player1Wins = false;
+		cout << players[1]->getName();
 	}
-	cout << " Player wins!" << endl;
+	cout << " wins!" << endl;
+	
+	// write the board states to the data file
+	// if player one is AI
+	if (AIPlayer* aiCheck = dynamic_cast<AIPlayer*>(players[0])) {
+		players[0]->writeBoardStatesToFile(player1Wins);
+	} else {
+		// if player two is AI
+		if (AIPlayer* aiCheck = dynamic_cast<AIPlayer*>(players[1])) {
+			players[1]->writeBoardStatesToFile(!player1Wins);
+		}
+	}
 	
 	// deallocate players
 	delete redPlayer;
