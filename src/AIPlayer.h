@@ -11,7 +11,7 @@ class AIPlayer : public Player {
 public:
 	AIPlayer(string n, Team t, map<string, tuple<double,double> > winProbabilities);
 	~AIPlayer();
-	deque<tuple<int,int> > getMoveInput(Board& b);
+	virtual deque<tuple<int,int> > getMoveInput(Board& b);
 	void writeBoardStatesToFile(bool wonGame);
 	map<string, tuple<double,double> >& getWinProbabilities();
 	

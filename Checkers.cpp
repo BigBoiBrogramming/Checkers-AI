@@ -2,6 +2,7 @@
 #include "src/Game.h"
 #include "src/Player.h"
 #include "src/AIPlayer.h"
+#include "src/RandomAIPlayer.h"
 #include <fstream>
 
 using namespace std;
@@ -13,11 +14,12 @@ int main(int argc, char *argv[])
 	// retrieve the key of win probabilities
 	map<string, tuple<double,double> > winProbabilities;
 	ifstream infile("WinProbabilities.txt");
+	
+	cout << "Loading in training data. This may take a few of minutes..." << endl;
+	
 	// add in each line of existing data
 	string boardstate;
 	int redWins, blackWins;
-	
-	cout << "Loading in training data. This may take a few of minutes..." << endl;
 	
 	while (infile >> boardstate >> redWins >> blackWins)
 	{
@@ -115,6 +117,7 @@ int main(int argc, char *argv[])
 	board.print();
 	
 	cout << "\n\nSaving data to output file..." << endl;
+	
 	// write the board states to the data file
 	// if player one is AI
 	if (AIPlayer* aiCheck = dynamic_cast<AIPlayer*>(players[0])) {
