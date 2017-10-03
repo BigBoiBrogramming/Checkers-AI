@@ -16,11 +16,16 @@ int main(int argc, char *argv[])
 	// add in each line of existing data
 	string boardstate;
 	int redWins, blackWins;
+	
+	cout << "Loading in training data. This may take a few of minutes..." << endl;
+	
 	while (infile >> boardstate >> redWins >> blackWins)
 	{
 		winProbabilities.insert(make_pair(boardstate, make_pair(redWins, blackWins)));
 	}
 	infile.close();
+	
+	cout << winProbabilities.size() << " units of training data were successfully loaded!\n" << endl;
 	
 	// set up Player 1
 	bool redPlayerIsAI = inputPlayerType(1);
@@ -29,6 +34,7 @@ int main(int argc, char *argv[])
 		string name = inputName();
 		redPlayer = new Player(name, red);
 	} else {
+		cout << "Creating Player 1 AI..." << endl;
 		redPlayer = new AIPlayer("Player 1 (AI)", red, winProbabilities);
 	}
 	
@@ -39,6 +45,7 @@ int main(int argc, char *argv[])
 		string name = inputName();
 		blackPlayer = new Player(name, black);
 	} else {
+	cout << "Creating Player 2 AI..." << endl;
 		blackPlayer = new AIPlayer("Player 2 (AI)", black, winProbabilities);
 	}
 	
@@ -91,7 +98,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	cout << "\n\n" << endl;
+	cout << "\n" << endl;
 	
 	bool player1Wins;
 	
@@ -103,10 +110,11 @@ int main(int argc, char *argv[])
 		player1Wins = false;
 		cout << players[1]->getName();
 	}
-	cout << " wins!" << endl;
+	cout << " wins!\n" << endl;
 	
 	board.print();
 	
+	cout << "\n\nSaving data to output file..." << endl;
 	// write the board states to the data file
 	// if player one is AI
 	if (AIPlayer* aiCheck = dynamic_cast<AIPlayer*>(players[0])) {
