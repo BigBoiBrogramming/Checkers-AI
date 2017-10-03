@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 			// check to see if no moves are available
 			if (finalMove.size() == 0) {
 				cout << currentPlayer->getName() << " has no available moves.";
-				cout << "The result of the game is a draw!" << endl;
+				cout << " The result of the game is a draw!" << endl;
 				delete redPlayer;
 				delete blackPlayer;
 				exit(0);
