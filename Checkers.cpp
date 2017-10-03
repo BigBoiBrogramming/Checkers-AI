@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
 				cout << "The result of the game is a draw!" << endl;
 				delete redPlayer;
 				delete blackPlayer;
+				exit(0);
 			}
 			
 			// move to the space and delete all attacked pieces along the way
