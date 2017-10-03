@@ -78,9 +78,6 @@ int main(int argc, char *argv[])
 			currentPlayer->getThisGamesBoardStates().insert(board.getBoardString());
 			enemyPlayer->getThisGamesBoardStates().insert(board.getBoardString());
 			
-			cout << currentPlayer->getThisGamesBoardStates().size() << endl;
-			cout << enemyPlayer->getThisGamesBoardStates().size() << endl;
-			
 			// update enemy player's piecesRemaining count
 			for (int j = 0; j < numCaptured; j++) {
 				enemyPlayer->decrementPiecesRemaining();

@@ -1,6 +1,7 @@
 #include "AIPlayer.h"
 #include "King.h"
 #include <fstream>
+#include <cmath>
 
 AIPlayer::AIPlayer(string n, Team t, map<string, tuple<double,double> > probs) : Player(n, t), winProbabilities(probs)
 {
@@ -59,7 +60,14 @@ deque<tuple<int,int> > AIPlayer::getBestMove(set<deque<tuple<int,int> > >& allMo
 		
 		// if the AI has never seen this board state
 		if (winProbabilities.find(finalBoardStateAfterMove) == winProbabilities.end()) {
-			thisWinProbability = .5; 
+			// give the move a better probability if it is an attack
+			tuple<double,double> startCoord = move.front();
+			tuple<double,double> endCoord = move.back();
+			if (abs(get<1>(startCoord) - get<1>(endCoord)) > 1) {
+				thisWinProbability = 0.8;
+			} else {
+				thisWinProbability = ((double)rand() / RAND_MAX);
+			}
 		} else {
 			tuple<double,double> wins = winProbabilities[finalBoardStateAfterMove];
 			if (team == red) {
@@ -145,8 +153,6 @@ void AIPlayer::writeBoardStatesToFile(bool wonGame)
 			valueToAddToBlack = 0;
 		}
 	}
-	
-	map<string, tuple<double,double> > winProbabilities;
 	
 	// add each board state found this game to win probabilites (updated old states when needed)
 	for (auto boardState : thisGamesBoardStates) {
